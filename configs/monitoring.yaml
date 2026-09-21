@@ -1,0 +1,4 @@
+psi_warning: 0.20
+psi_critical: 0.30
+latency_warning_ms: 100
+random_seed: 42

@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Environments and local tooling
+.venv/
+venv/
+env/
+.env
+.env.*
+!.env.example
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# DVC local state and caches; keep dvc.yaml, dvc.lock, and .dvc/config tracked
+.dvc/cache/
+.dvc/tmp/
+.dvc-system/
+.dvc-global/
+.dvc-site-cache/
+
+# Immutable/raw and generated data are stored outside Git and tracked through DVC
+data/raw/
+data/downloads/
+data/interim/
+data/processed/
+
+# Model and generated artifacts
+models/
+reports/generated/
+
+# Local secrets and credentials
+*.pem
+*.key
+*.crt
+credentials.json
+secrets.yaml
+secrets.yml
+
+# Operating system and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

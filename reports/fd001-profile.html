@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>FD001 profile</title>
+<style>body{font-family:Arial,sans-serif;margin:2rem;line-height:1.4} table{border-collapse:collapse;margin:1rem 0} th,td{border:1px solid #ccc;padding:.35rem .55rem} th{background:#eee} code{background:#f4f4f4;padding:.1rem .25rem}</style>
+</head>
+<body>
+<h1>NASA C-MAPSS FD001 profile</h1>
+<p>Generated from training data. Variance and correlation analysis uses development engines only (<code>unit_id % 5 != 0</code>).</p>
+<h2>Summary</h2><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>metric</th>
+      <th>value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>training rows</td>
+      <td>20631.0</td>
+    </tr>
+    <tr>
+      <td>training engines</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>development rows</td>
+      <td>16656.0</td>
+    </tr>
+    <tr>
+      <td>development engines</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <td>validation rows</td>
+      <td>3975.0</td>
+    </tr>
+    <tr>
+      <td>validation engines</td>
+      <td>20.0</td>
+    </tr>
+    <tr>
+      <td>lifecycle minimum</td>
+      <td>128.0</td>
+    </tr>
+    <tr>
+      <td>lifecycle median</td>
+      <td>199.5</td>
+    </tr>
+    <tr>
+      <td>lifecycle maximum</td>
+      <td>362.0</td>
+    </tr>
+  </tbody>
+</table>
+<h2>Operating settings</h2><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>count</th>
+      <th>mean</th>
+      <th>std</th>
+      <th>min</th>
+      <th>25%</th>
+      <th>50%</th>
+      <th>75%</th>
+      <th>max</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>op_setting_1</th>
+      <td>16656.0</td>
+      <td>-0.000018</td>
+      <td>0.002182</td>
+      <td>-0.0087</td>
+      <td>-0.0015</td>
+      <td>0.0</td>
+      <td>0.0014</td>
+      <td>0.0087</td>
+    </tr>
+    <tr>
+      <th>op_setting_2</th>
+      <td>16656.0</td>
+      <td>0.000005</td>
+      <td>0.000293</td>
+      <td>-0.0006</td>
+      <td>-0.0002</td>
+      <td>0.0</td>
+      <td>0.0003</td>
+      <td>0.0006</td>
+    </tr>
+    <tr>
+      <th>op_setting_3</th>
+      <td>16656.0</td>
+      <td>100.000000</td>
+      <td>0.000000</td>
+      <td>100.0000</td>
+      <td>100.0000</td>
+      <td>100.0</td>
+      <td>100.0000</td>
+      <td>100.0000</td>
+    </tr>
+  </tbody>
+</table>
+<h2>Sensor variance</h2><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>variance</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>sensor_1</th>
+      <td>0.000000e+00</td>
+    </tr>
+    <tr>
+      <th>sensor_18</th>
+      <td>0.000000e+00</td>
+    </tr>
+    <tr>
+      <th>sensor_19</th>
+      <td>0.000000e+00</td>
+    </tr>
+    <tr>
+      <th>sensor_16</th>
+      <td>1.083336e-34</td>
+    </tr>
+    <tr>
+      <th>sensor_10</th>
+      <td>4.930381e-32</td>
+    </tr>
+    <tr>
+      <th>sensor_5</th>
+      <td>3.155444e-30</td>
+    </tr>
+    <tr>
+      <th>sensor_6</th>
+      <td>1.872771e-06</td>
+    </tr>
+    <tr>
+      <th>sensor_15</th>
+      <td>1.408790e-03</td>
+    </tr>
+    <tr>
+      <th>sensor_8</th>
+      <td>5.118366e-03</td>
+    </tr>
+    <tr>
+      <th>sensor_13</th>
+      <td>5.198681e-03</td>
+    </tr>
+    <tr>
+      <th>sensor_21</th>
+      <td>1.170943e-02</td>
+    </tr>
+    <tr>
+      <th>sensor_20</th>
+      <td>3.262228e-02</td>
+    </tr>
+    <tr>
+      <th>sensor_11</th>
+      <td>7.119812e-02</td>
+    </tr>
+    <tr>
+      <th>sensor_2</th>
+      <td>2.476946e-01</td>
+    </tr>
+    <tr>
+      <th>sensor_12</th>
+      <td>5.449766e-01</td>
+    </tr>
+    <tr>
+      <th>sensor_7</th>
+      <td>7.806017e-01</td>
+    </tr>
+    <tr>
+      <th>sensor_17</th>
+      <td>2.391359e+00</td>
+    </tr>
+    <tr>
+      <th>sensor_3</th>
+      <td>3.739800e+01</td>
+    </tr>
+    <tr>
+      <th>sensor_4</th>
+      <td>8.050732e+01</td>
+    </tr>
+    <tr>
+      <th>sensor_14</th>
+      <td>3.797867e+02</td>
+    </tr>
+    <tr>
+      <th>sensor_9</th>
+      <td>5.057468e+02</td>
+    </tr>
+  </tbody>
+</table>
+<p>Excluded at variance threshold 1e-06: sensor_1, sensor_18, sensor_19, sensor_16, sensor_10, sensor_5</p>
+<h2>Strongest sensor correlations</h2><table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>sensor_a</th>
+      <th>sensor_b</th>
+      <th>correlation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>sensor_9</td>
+      <td>sensor_14</td>
+      <td>0.964536</td>
+    </tr>
+    <tr>
+      <td>sensor_11</td>
+      <td>sensor_12</td>
+      <td>-0.846783</td>
+    </tr>
+    <tr>
+      <td>sensor_4</td>
+      <td>sensor_11</td>
+      <td>0.829767</td>
+    </tr>
+    <tr>
+      <td>sensor_8</td>
+      <td>sensor_13</td>
+      <td>0.827588</td>
+    </tr>
+    <tr>
+      <td>sensor_7</td>
+      <td>sensor_11</td>
+      <td>-0.821886</td>
+    </tr>
+    <tr>
+      <td>sensor_4</td>
+      <td>sensor_12</td>
+      <td>-0.814355</td>
+    </tr>
+    <tr>
+      <td>sensor_7</td>
+      <td>sensor_12</td>
+      <td>0.813000</td>
+    </tr>
+    <tr>
+      <td>sensor_4</td>
+      <td>sensor_7</td>
+      <td>-0.793123</td>
+    </tr>
+    <tr>
+      <td>sensor_12</td>
+      <td>sensor_13</td>
+      <td>-0.790187</td>
+    </tr>
+    <tr>
+      <td>sensor_8</td>
+      <td>sensor_12</td>
+      <td>-0.789326</td>
+    </tr>
+    <tr>
+      <td>sensor_8</td>
+      <td>sensor_11</td>
+      <td>0.783891</td>
+    </tr>
+    <tr>
+      <td>sensor_11</td>
+      <td>sensor_13</td>
+      <td>0.781425</td>
+    </tr>
+    <tr>
+      <td>sensor_11</td>
+      <td>sensor_15</td>
+      <td>0.781214</td>
+    </tr>
+    <tr>
+      <td>sensor_11</td>
+      <td>sensor_21</td>
+      <td>-0.774487</td>
+    </tr>
+    <tr>
+      <td>sensor_11</td>
+      <td>sensor_20</td>
+      <td>-0.770049</td>
+    </tr>
+    <tr>
+      <td>sensor_7</td>
+      <td>sensor_8</td>
+      <td>-0.767722</td>
+    </tr>
+    <tr>
+      <td>sensor_12</td>
+      <td>sensor_15</td>
+      <td>-0.765875</td>
+    </tr>
+    <tr>
+      <td>sensor_7</td>
+      <td>sensor_13</td>
+      <td>-0.764445</td>
+    </tr>
+    <tr>
+      <td>sensor_4</td>
+      <td>sensor_15</td>
+      <td>0.758485</td>
+    </tr>
+    <tr>
+      <td>sensor_12</td>
+      <td>sensor_21</td>
+      <td>0.758315</td>
+    </tr>
+  </tbody>
+</table>
+<h2>Limitations</h2>
+<ul><li>FD001 has one operating condition and one fault mode.</li><li>The data is simulated.</li><li>Correlation indicates association, not physical causality.</li><li>Findings do not automatically generalize to other C-MAPSS subsets or real engines.</li></ul>
+</body></html>

@@ -1,0 +1,12 @@
+{
+  "feature_selection_partition": "development",
+  "variance_threshold": 1e-06,
+  "excluded_features": [
+    "sensor_1",
+    "sensor_10",
+    "sensor_16",
+    "sensor_18",
+    "sensor_19",
+    "sensor_5"
+  ]
+}

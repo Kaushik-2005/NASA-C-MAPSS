@@ -1,0 +1,14 @@
+stages:
+  validate_raw:
+    cmd: python -m src.data.validate_raw --report reports/fd001-data-quality.json
+    deps:
+      - src/data/checksums.py
+      - src/data/ingest.py
+      - src/data/schema.py
+      - src/data/validate_raw.py
+      - data/raw/train_FD001.txt
+      - data/raw/test_FD001.txt
+      - data/raw/RUL_FD001.txt
+      - data/checksums.sha256
+    outs:
+      - reports/fd001-data-quality.json

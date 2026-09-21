@@ -1,0 +1,7 @@
+dataset: fd001
+raw_dir: data/raw
+required_files:
+  - train_FD001.txt
+  - test_FD001.txt
+  - RUL_FD001.txt
+random_seed: 42

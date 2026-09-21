@@ -1,0 +1,8 @@
+{
+  "minimum_history_cycles": 20,
+  "training_samples": 15136,
+  "validation_samples": 80,
+  "validation_requested_cutoffs": 80,
+  "validation_deduplicated_cutoffs": 0,
+  "final_test_samples": 100
+}

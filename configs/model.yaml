@@ -1,0 +1,8 @@
+target: target_rul
+rul_cap: 125
+random_seed: 42
+models:
+  - median
+  - ridge
+  - random_forest
+  - xgboost

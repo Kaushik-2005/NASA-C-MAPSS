@@ -2,13 +2,13 @@
 
 ## Current Module
 
-- Module: 6 - Fixed Temporal Feature Pipeline
+- Module: 8 - Random Forest and XGBoost
 - Status: NOT STARTED
 - Started: 2026-09-21
-- Last updated: 2026-09-21
-- Current task: Prepare the shared temporal feature pipeline
-- Next action: Read Module 6 contract and define ordered feature schema
-- Blockers: Git is not initialized in the workspace; DVC lock refresh should be confirmed in the user's activated shell
+- Last updated: 2026-09-22
+- Current task: —
+- Next action: Read Module 8 contract and prepare GroupKFold/XGBoost search
+- Blockers: None
 
 ## Module Status
 
@@ -19,10 +19,29 @@
 | 3 | IMPLEMENTED - VERIFICATION PENDING | `data/raw/`, `src/data/`, `data/checksums.sha256`, `dvc.yaml`, `reports/fd001-data-quality.json` | 26 tests and raw validation pass; DVC lock refresh pending |
 | 4 | COMPLETE | `notebooks/02_fd001_eda.ipynb`, `docs/data-dictionary.md`, `reports/fd001-profile.html`, `configs/excluded_features.json` | 28 tests pass; profile generated |
 | 5 | COMPLETE | `src/data/labels.py`, `src/data/splits.py`, `src/data/samples.py`, `src/data/leakage.py`, `docs/leakage-analysis.md`, `data/manifests/` | 48 tests pass; fixed samples and leakage checks verified |
-| 6 | NOT STARTED | - | Shared temporal features next |
-| 7-17 | NOT STARTED | - | - |
+| 6 | COMPLETE | `src/features/`, `configs/feature_schema_v1.json`, `models/feature_preprocessor_v1.joblib`, `reports/feature-pipeline-v1.json`, `docs/design.md` | 64 tests pass; development artifact fitted |
+| 7 | COMPLETE | `src/training/benchmark.py`, `reports/baseline-results.md`, `reports/baseline-results.json`, MLflow experiment `engineguard-baselines` | Validation benchmark, timing, model size, and threshold comparison verified |
+| 8-17 | NOT STARTED | - | - |
 
 ## Current Module Checklist
+
+- [x] Implement RMSE, MAE, and R-squared
+- [x] Implement median constant predictor
+- [x] Implement Ridge Regression baseline
+- [x] Implement Logistic Regression learning artifact
+- [x] Add regression and classification tests
+- [x] Measure time and serialized model size
+- [x] Log baseline runs to MLflow
+- [x] Write baseline report
+- [x] Run Module 7 completion gate
+
+- [x] Define retained feature columns and schema version `v1`
+- [x] Implement current, rolling, delta, and slope features
+- [x] Add cycle/history features
+- [x] Enforce minimum history of 20 cycles
+- [x] Add temporal leakage and boundary tests
+- [x] Add offline/online parity test
+- [x] Run Module 6 completion gate
 
 - [x] Implement `raw_rul`, `target_rul`, and `failure_within_30`
 - [x] Add label tests
@@ -51,8 +70,16 @@
 | `.venv\\Scripts\\python.exe -m dvc dag` | `validate_raw` stage recognized | 2026-09-21 |
 | `.venv\\Scripts\\python.exe -m pytest tests/unit -q` | 28 passed | 2026-09-21 |
 | `.venv\\Scripts\\python.exe -m src.eda.profile` | Wrote `reports/fd001-profile.html` | 2026-09-21 |
+| `.venv\\Scripts\\python.exe -m pytest tests\\unit\\test_baselines.py -q` | 4 passed | 2026-09-21 |
+| `.venv\\Scripts\\python.exe -m pytest tests\\unit -q --tb=short` | 68 passed | 2026-09-21 |
+| `.venv\\Scripts\\python.exe -m pytest tests\\unit\\test_baselines.py -q --tb=short` | 7 passed | 2026-09-21 |
+| `.venv\\Scripts\\python.exe -m pytest tests\\unit -q --tb=short` | 71 passed | 2026-09-21 |
+| `.venv\\Scripts\\python.exe -m pytest tests\\unit -q --tb=short` | 75 passed | 2026-09-22 |
+| `.venv\\Scripts\\python.exe -m ruff check src\\evaluation\\metrics.py src\\training\\baselines.py tests\\unit\\test_baselines.py` | All checks passed | 2026-09-22 |
+| `.venv\\Scripts\\python.exe -m src.training.benchmark` | Baseline report written; MLflow experiment `engineguard-baselines` logged | 2026-09-22 |
+| `.venv\\Scripts\\python.exe -m ruff check src\\training\\benchmark.py` | All checks passed | 2026-09-22 |
+| `.venv\\Scripts\\python.exe -m pytest tests\\unit -q --tb=short` | 75 passed | 2026-09-22 |
 
 ## Blockers and Risks
 
-- Git metadata is absent in the current directory, so repository history cannot be inspected or updated.
 - Official test data must not influence feature selection or variance analysis; use development engines only.

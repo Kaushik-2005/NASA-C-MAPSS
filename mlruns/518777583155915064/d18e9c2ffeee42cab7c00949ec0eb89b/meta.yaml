@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/kaush/OneDrive/Desktop/Work/NASA%20C-MAPSS/mlruns/518777583155915064/d18e9c2ffeee42cab7c00949ec0eb89b/artifacts
+end_time: 1790016304771
+entry_point_name: ''
+experiment_id: '518777583155915064'
+lifecycle_stage: active
+run_id: d18e9c2ffeee42cab7c00949ec0eb89b
+run_name: fd001-module-7-baselines
+run_uuid: d18e9c2ffeee42cab7c00949ec0eb89b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1790016304171
+status: 3
+tags: []
+user_id: kaush

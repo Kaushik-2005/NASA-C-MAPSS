@@ -1,4 +1,6 @@
 schema_version: v1
+metadata_path: configs/feature_schema_v1.json
 minimum_history_cycles: 20
+variance_threshold: 0.000001
 rolling_windows: [5, 10, 20]
 trend_window: 20

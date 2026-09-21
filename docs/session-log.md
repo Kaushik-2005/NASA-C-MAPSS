@@ -69,3 +69,53 @@
 - Decisions made: Keep initial and incremental training as nested subsets of development while asserting only mutually exclusive partition pairs.
 - Blockers: None for Module 5.
 - Next action: Begin Module 6 shared temporal feature pipeline.
+
+## 2026-09-21 - Module 6 complete
+
+- Goal: Build and verify the shared leakage-safe temporal feature pipeline.
+- Changes: Added ordered temporal features, feature-matrix construction, schema metadata, development-only preprocessing, serialized artifact generation, and design documentation.
+- Tests and results: Full unit suite - 64 passed; complete development preprocessor fit completed and evidence written to `reports/feature-pipeline-v1.json`.
+- Learning captured: Temporal features must be computed from an available-history prefix; variance filtering and scaling are learned only from development data.
+- Decisions made: Keep scaling optional because Ridge needs it while tree models do not; preserve one `v1` ordered feature contract for all consumers.
+- Blockers: None for Module 6.
+- Next action: Begin Module 7 baselines.
+
+## 2026-09-21 - Module 7 metrics and median baseline
+
+- Goal: Establish validated regression metrics and the non-ML median RUL benchmark.
+- Changes: Added input-safe RMSE, MAE, and R-squared helpers plus a scikit-learn-compatible median RUL regressor.
+- Tests and results: Focused baseline tests - 4 passed; full unit suite - 68 passed.
+- Learning captured: The median predictor is the minimum benchmark that every learned regression model must beat; RMSE emphasizes large maintenance-relevant errors while MAE remains directly interpretable in cycles.
+- Decisions made: Keep metric validation centralized and fail fast on mismatched, empty, or non-finite inputs.
+- Blockers: None.
+- Next action: Implement Ridge Regression with standardized development features.
+
+## 2026-09-21 - Module 7 Ridge baseline
+
+- Goal: Add the first learned RUL regression baseline after the median predictor.
+- Changes: Added validated `RidgeRULRegressor` using scikit-learn Ridge; it consumes features transformed by the existing development-fitted preprocessor.
+- Tests and results: Focused baseline tests - 7 passed; full unit suite - 71 passed.
+- Learning captured: Ridge adds an L2 penalty to reduce coefficient magnitude and sensitivity to correlated temporal features; standardization is required so the penalty treats feature coefficients comparably.
+- Decisions made: Keep preprocessing separate and reusable instead of duplicating scaling inside the model wrapper; retain clipping at the inference boundary.
+- Blockers: None.
+- Next action: Implement Logistic Regression and classification metrics for the learning-only failure-within-30 task.
+
+## 2026-09-22 - Module 7 Logistic classification artifact
+
+- Goal: Add the learning-only failure-within-30 classifier and classification evaluation contract.
+- Changes: Added validated Logistic Regression, probability and custom-threshold prediction, precision/recall/F1, ROC-AUC, PR-AUC, and confusion-matrix metrics.
+- Tests and results: Full unit suite - 75 passed; Ruff checks passed for changed files.
+- Learning captured: Accuracy can hide missed failures under class imbalance; PR-AUC and recall-oriented thresholds make the operational trade-off visible.
+- Decisions made: Use average precision as PR-AUC, preserve the default 0.5 threshold for comparison, and expose custom thresholds without making classification a served EngineGuard endpoint.
+- Blockers: None.
+- Next action: Train and benchmark the median, Ridge, and Logistic baselines on the fixed development/validation samples.
+
+## 2026-09-22 - Module 7 complete
+
+- Goal: Benchmark the required Module 7 baselines and record reproducible validation evidence.
+- Changes: Added the benchmark runner, JSON/Markdown reports, serialized baseline artifacts, MLflow logging, and declared the MLflow dependency.
+- Tests and results: Benchmark completed on 15,136 development samples and 80 fixed validation samples; full unit suite - 75 passed; Ruff passed. Median RMSE 50.2057; Ridge RMSE 20.4961; Logistic PR-AUC 0.9721 at the default threshold.
+- Learning captured: The median predictor is the reference floor; Ridge substantially improves the validation error, while classification threshold changes trade precision against recall and do not change ranking metrics such as ROC-AUC or PR-AUC.
+- Decisions made: Keep official test data and labels isolated; use standardized development-fitted features for Ridge and Logistic Regression; log local baseline artifacts to the `engineguard-baselines` MLflow experiment.
+- Blockers: None.
+- Next action: Begin Module 8 Random Forest and XGBoost with GroupKFold by engine.

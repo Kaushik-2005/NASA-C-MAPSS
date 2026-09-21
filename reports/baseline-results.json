@@ -1,0 +1,83 @@
+{
+  "dataset": "NASA C-MAPSS FD001",
+  "feature_schema_version": "v1",
+  "train_partition": "development (80 engines)",
+  "validation_partition": "fixed validation samples (20 engines, 4 cutoffs)",
+  "development_samples": 15136,
+  "validation_samples": 80,
+  "validation_cutoffs_requested": 80,
+  "validation_cutoffs_deduplicated": 0,
+  "standardized_feature_count": 133,
+  "regression": {
+    "median": {
+      "metrics": {
+        "rmse": 50.20570186741741,
+        "mae": 44.7375,
+        "r_squared": -3.2398875735617043
+      },
+      "training_time_ms": 2.756799978669733,
+      "inference_time_ms": 0.021500018192455173,
+      "model_size_bytes": 90,
+      "artifact": "models\\median_rul_v1.joblib"
+    },
+    "ridge": {
+      "metrics": {
+        "rmse": 20.49612249666675,
+        "mae": 17.046915868323204,
+        "r_squared": 0.29337065128813367
+      },
+      "training_time_ms": 231.29359999438748,
+      "inference_time_ms": 1.153399993199855,
+      "model_size_bytes": 1713,
+      "artifact": "models\\ridge_rul_v1.joblib"
+    }
+  },
+  "classification": {
+    "logistic": {
+      "default_threshold": {
+        "precision": 0.95,
+        "recall": 0.9047619047619048,
+        "f1": 0.926829268292683,
+        "roc_auc": 0.9870863599677159,
+        "pr_auc": 0.972137079608344,
+        "threshold": 0.5,
+        "confusion_matrix": [
+          [
+            58,
+            1
+          ],
+          [
+            2,
+            19
+          ]
+        ]
+      },
+      "recall_oriented_threshold": {
+        "precision": 0.9047619047619048,
+        "recall": 0.9047619047619048,
+        "f1": 0.9047619047619048,
+        "roc_auc": 0.9870863599677159,
+        "pr_auc": 0.972137079608344,
+        "threshold": 0.3,
+        "confusion_matrix": [
+          [
+            57,
+            2
+          ],
+          [
+            2,
+            19
+          ]
+        ]
+      },
+      "training_time_ms": 637.2661000059452,
+      "inference_time_ms": 1.6739999991841614,
+      "model_size_bytes": 2031,
+      "artifact": "models\\logistic_failure_v1.joblib"
+    }
+  },
+  "mlflow": {
+    "status": "logged",
+    "experiment": "engineguard-baselines"
+  }
+}

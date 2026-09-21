@@ -1,0 +1,10 @@
+{
+  "feature_schema_version": "v1",
+  "fit_partition": "development",
+  "development_samples": 15136,
+  "raw_feature_count": 164,
+  "selected_feature_count": 133,
+  "variance_threshold": 1e-06,
+  "scaling": false,
+  "artifact": "models\\feature_preprocessor_v1.joblib"
+}

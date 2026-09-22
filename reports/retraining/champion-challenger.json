@@ -1,0 +1,174 @@
+{
+  "dataset": "NASA C-MAPSS FD001",
+  "validation_engines": [
+    5,
+    10,
+    15,
+    20,
+    25,
+    30,
+    35,
+    40,
+    45,
+    50,
+    55,
+    60,
+    65,
+    70,
+    75,
+    80,
+    85,
+    90,
+    95,
+    100
+  ],
+  "initial_training_engines": [
+    1,
+    2,
+    3,
+    4,
+    6,
+    7,
+    8,
+    9,
+    11,
+    12,
+    13,
+    14,
+    16,
+    17,
+    18,
+    19,
+    21,
+    22,
+    23,
+    24,
+    26,
+    27,
+    28,
+    29,
+    31,
+    32,
+    33,
+    34,
+    36,
+    37,
+    38,
+    39,
+    41,
+    42,
+    43,
+    44,
+    46,
+    47,
+    48,
+    49,
+    51,
+    52,
+    53,
+    54,
+    56,
+    57,
+    58,
+    59,
+    61,
+    62,
+    63,
+    64,
+    66,
+    67,
+    68,
+    69,
+    71,
+    72,
+    73,
+    74
+  ],
+  "incremental_training_engines": [
+    76,
+    77,
+    78,
+    79,
+    81,
+    82,
+    83,
+    84,
+    86,
+    87,
+    88,
+    89,
+    91,
+    92,
+    93,
+    94,
+    96,
+    97,
+    98,
+    99
+  ],
+  "initial_training_samples": 11054,
+  "challenger_training_samples": 15136,
+  "validation_samples": 80,
+  "champion": {
+    "model": "models\\champion_initial_v1.joblib",
+    "metrics": {
+      "rmse": 16.950154628846374,
+      "mae": 12.864575672149659,
+      "r_squared": 0.5167236039466123
+    },
+    "batch_inference_ms": 12.21289997920394,
+    "prediction_bounds": [
+      13.463581085205078,
+      118.45295715332031
+    ]
+  },
+  "challenger": {
+    "model": "models\\challenger_incremental_v1.joblib",
+    "metrics": {
+      "rmse": 16.427882310971146,
+      "mae": 12.360720133781433,
+      "r_squared": 0.5460464454947662
+    },
+    "batch_inference_ms": 12.474100047256798,
+    "single_row_p95_ms": 11.313059987151064,
+    "prediction_bounds": [
+      10.819353103637695,
+      118.00284576416016
+    ]
+  },
+  "promotion": {
+    "promote": true,
+    "reasons": [],
+    "passed_gates": [
+      "rmse_improvement",
+      "mae_not_worse",
+      "prediction_count",
+      "prediction_bounds",
+      "latency_p95",
+      "artifact_registration",
+      "tests"
+    ]
+  },
+  "verification": {
+    "tests_passed": true,
+    "test_command": "python -m pytest tests/unit -q --tb=short",
+    "test_output_tail": "s\\mlflow\\utils\\pydantic_utils.py:33: PydanticDeprecatedSince212: Using `@model_validator` with mode='after' on a classmethod is deprecated. Instead, use an instance method. See the documentation at https://docs.pydantic.dev/2.13/concepts/validators/#model-after-validator. Deprecated in Pydantic V2.12 to be removed in V3.0.\n    return pydantic_model_validator(mode=mode)(func)\n\n.venv\\Lib\\site-packages\\mlflow\\gateway\\config.py:454\n  C:\\Users\\kaush\\OneDrive\\Desktop\\Work\\NASA C-MAPSS\\.venv\\Lib\\site-packages\\mlflow\\gateway\\config.py:454: PydanticDeprecatedSince20: Support for class-based `config` is deprecated, use ConfigDict instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.13/migration/\n    class Route(ConfigModel):\n\n.venv\\Lib\\site-packages\\shap\\plots\\colors\\_colors.py:47\n  C:\\Users\\kaush\\OneDrive\\Desktop\\Work\\NASA C-MAPSS\\.venv\\Lib\\site-packages\\shap\\plots\\colors\\_colors.py:47: PendingDeprecationWarning: The set_bad function will be deprecated in a future version. Use cmap.with_extremes(bad=...) or Colormap(bad=...) instead.\n    red_blue.set_bad(gray_rgb.tolist(), 1.0)\n\n.venv\\Lib\\site-packages\\shap\\plots\\colors\\_colors.py:48\n  C:\\Users\\kaush\\OneDrive\\Desktop\\Work\\NASA C-MAPSS\\.venv\\Lib\\site-packages\\shap\\plots\\colors\\_colors.py:48: PendingDeprecationWarning: The set_over function will be deprecated in a future version. Use cmap.with_extremes(over=...) or Colormap(over=...) instead.\n    red_blue.set_over(gray_rgb.tolist(), 1.0)\n\n.venv\\Lib\\site-packages\\shap\\plots\\colors\\_colors.py:49\n  C:\\Users\\kaush\\OneDrive\\Desktop\\Work\\NASA C-MAPSS\\.venv\\Lib\\site-packages\\shap\\plots\\colors\\_colors.py:49: PendingDeprecationWarning: The set_under function will be deprecated in a future version. Use cmap.with_extremes(under=...) or Colormap(under=...) instead.\n    red_blue.set_under(gray_rgb.tolist(), 1.0)  # \"under\" is incorrectly used instead of \"bad\" in the scatter plot\n\ntests/unit/test_monitoring.py::test_evidently_report_writes_html_and_json\ntests/unit/test_monitoring.py::test_evidently_report_writes_html_and_json\n  C:\\Users\\kaush\\OneDrive\\Desktop\\Work\\NASA C-MAPSS\\.venv\\Lib\\site-packages\\evidently\\legacy\\tests\\utils.py:183: DeprecationWarning:\n  \n  numpy.core is deprecated and has been renamed to numpy._core. The numpy._core namespace contains private NumPy internals and its use is discouraged, as NumPy internals can change without warning in any release. In practice, most real-world usage of numpy.core is to access functionality in the public NumPy API. If that is the case, use the public NumPy API. If not, you are using NumPy internals. If you would still like to access an internal attribute, use numpy._core.numeric.\n\ntests/unit/test_monitoring.py::test_evidently_report_writes_html_and_json\ntests/unit/test_monitoring.py::test_evidently_report_writes_html_and_json\ntests/unit/test_monitoring.py::test_evidently_report_writes_html_and_json\ntests/unit/test_monitoring.py::test_evidently_report_writes_html_and_json\n  C:\\Users\\kaush\\OneDrive\\Desktop\\Work\\NASA C-MAPSS\\.venv\\Lib\\site-packages\\litestar\\utils\\deprecation.py:99: LitestarDeprecationWarning:\n  \n  Call to deprecated function 'Dependency'. Deprecated in litestar 2.23.0. This function will be removed in 3.0. Use 'di.NamedDependency' instead\n\ntests/unit/test_monitoring.py::test_evidently_report_writes_html_and_json\ntests/unit/test_monitoring.py::test_evidently_report_writes_html_and_json\ntests/unit/test_monitoring.py::test_evidently_report_writes_html_and_json\ntests/unit/test_monitoring.py::test_evidently_report_writes_html_and_json\n  C:\\Users\\kaush\\OneDrive\\Desktop\\Work\\NASA C-MAPSS\\.venv\\Lib\\site-packages\\litestar\\params.py:538: LitestarDeprecationWarning:\n  \n  Use of deprecated class 'DependencyKwarg'. Deprecated in litestar 2.23.0. This class will be removed in 3.0. Use 'di.NamedDependency' instead\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n114 passed, 16 warnings in 164.12s (0:02:44)"
+  },
+  "mlflow": {
+    "registered_model": "EngineGuardRUL",
+    "initial_champion_version": "2",
+    "candidate_version": "3",
+    "candidate_alias": "EngineGuardRUL@candidate",
+    "champion_version_before_decision": "1",
+    "runs": {
+      "initial-champion": {
+        "run_id": "9d69df6c3b6240af9fd364b238f3436b",
+        "model_uri": "runs:/9d69df6c3b6240af9fd364b238f3436b/model"
+      },
+      "incremental-challenger": {
+        "run_id": "4ae983dcecaf489e942802e7a4b4e2f2",
+        "model_uri": "runs:/4ae983dcecaf489e942802e7a4b4e2f2/model"
+      }
+    }
+  }
+}

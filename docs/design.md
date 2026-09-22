@@ -39,3 +39,20 @@ serving artifact.
 
 Validation and official test rows are not used to fit feature filtering or
 scaling. Labels and lifecycle-derived columns are never emitted as features.
+
+## Retraining and promotion flow
+
+Module 15 simulates newly labeled incremental-training engines without using
+official test labels. The initial champion is trained on the fixed
+initial-training partition; the challenger uses all development engines. Both
+are evaluated on the unchanged validation-engine samples. Retraining is
+triggered by two consecutive valid batches with feature PSI at or above 0.20,
+or labeled RMSE above 120% of the frozen champion validation RMSE.
+
+Promotion requires every gate in `src/training/retrain.py`: at least 3% RMSE
+improvement, no worse MAE, complete bounded predictions, p95 latency below
+100 ms, registered lineage/artifacts, and a passing unit suite. MLflow stores
+both runs, assigns the challenger the `candidate` alias, and moves
+`champion` only after the decision passes. A failed challenger retains the
+champion; the transition audit records the rejection reasons and the previous
+champion version for rollback.

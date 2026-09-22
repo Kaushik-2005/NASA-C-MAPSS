@@ -1,0 +1,28 @@
+{
+  "event": "promotion_decision",
+  "decision": "promote",
+  "reasons": [],
+  "rollback_backup": "models\\champion_initial_v1.joblib",
+  "mlflow": {
+    "registered_model": "EngineGuardRUL",
+    "initial_champion_version": "2",
+    "candidate_version": "3",
+    "candidate_alias": "EngineGuardRUL@candidate",
+    "champion_version_before_decision": "1",
+    "runs": {
+      "initial-champion": {
+        "run_id": "9d69df6c3b6240af9fd364b238f3436b",
+        "model_uri": "runs:/9d69df6c3b6240af9fd364b238f3436b/model"
+      },
+      "incremental-challenger": {
+        "run_id": "4ae983dcecaf489e942802e7a4b4e2f2",
+        "model_uri": "runs:/4ae983dcecaf489e942802e7a4b4e2f2/model"
+      }
+    }
+  },
+  "promotion_action": {
+    "action": "promote",
+    "champion_version_after_decision": "3",
+    "previous_champion_version": "1"
+  }
+}

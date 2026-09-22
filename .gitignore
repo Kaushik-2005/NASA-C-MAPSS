@@ -61,6 +61,7 @@ reports/*.html
 reports/*.csv
 reports/*.png
 reports/final-explainability/
+reports/monitoring/
 reports/baseline-results.md
 reports/tree-model-comparison.md
 reports/final-evaluation.md

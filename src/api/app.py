@@ -2,15 +2,18 @@
 
 from __future__ import annotations
 
+import asyncio
 import logging
 import time
-from collections.abc import AsyncIterator
+from collections.abc import AsyncIterator, Awaitable, Callable
 from contextlib import asynccontextmanager
 from datetime import UTC, datetime
 from typing import cast
 from uuid import uuid4
 
 from fastapi import FastAPI, HTTPException, Request, status
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse, Response
 
 from src.api.schemas import (
     BatchPredictionRequest,
@@ -20,6 +23,11 @@ from src.api.schemas import (
     ModelInfoResponse,
     PredictionResponse,
     ReadyResponse,
+)
+from src.api.security import (
+    MAX_REQUEST_BYTES,
+    REQUEST_TIMEOUT_SECONDS,
+    validation_details,
 )
 from src.api.service import ModelService, risk_level
 
@@ -43,6 +51,84 @@ app = FastAPI(
     version="1.0.0",
     lifespan=lifespan,
 )
+
+
+@app.middleware("http")
+async def request_safety_middleware(
+    request: Request,
+    call_next: Callable[[Request], Awaitable[Response]],
+) -> Response:
+    """Reject oversized requests and bound request processing time."""
+    content_length = request.headers.get("content-length")
+    if content_length is not None:
+        try:
+            request_bytes = int(content_length)
+        except ValueError:
+            return JSONResponse(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                content={
+                    "error_code": "INVALID_CONTENT_LENGTH",
+                    "message": "Content-Length must be an integer",
+                    "request_id": str(uuid4()),
+                },
+            )
+        if request_bytes > MAX_REQUEST_BYTES:
+            return JSONResponse(
+                status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+                content={
+                    "error_code": "REQUEST_TOO_LARGE",
+                    "message": f"Request body must be at most {MAX_REQUEST_BYTES} bytes",
+                    "request_id": str(uuid4()),
+                },
+            )
+
+    try:
+        return await asyncio.wait_for(
+            call_next(request),
+            timeout=REQUEST_TIMEOUT_SECONDS,
+        )
+    except TimeoutError:
+        return JSONResponse(
+            status_code=status.HTTP_504_GATEWAY_TIMEOUT,
+            content={
+                "error_code": "REQUEST_TIMEOUT",
+                "message": "Request processing exceeded the service timeout",
+                "request_id": str(uuid4()),
+            },
+        )
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(
+    request: Request,
+    exc: RequestValidationError,
+) -> JSONResponse:
+    """Return a stable validation error without echoing sensor histories."""
+    request_id = request.headers.get("x-request-id", str(uuid4()))
+    return JSONResponse(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        content={
+            "error_code": "VALIDATION_ERROR",
+            "message": "Request failed schema validation",
+            "request_id": request_id,
+            "details": validation_details(exc.errors()),
+        },
+    )
+
+
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request: Request, exc: HTTPException) -> JSONResponse:
+    """Return typed errors for service and readiness failures."""
+    request_id = request.headers.get("x-request-id", str(uuid4()))
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={
+            "error_code": "HTTP_ERROR",
+            "message": str(exc.detail),
+            "request_id": request_id,
+        },
+        headers=exc.headers,
+    )
 
 
 def _service(request: Request) -> ModelService:

@@ -19,7 +19,7 @@ test:
 	python -m pytest -q
 
 monitor:
-	@echo "Monitoring is planned for a future module."
+	python -m src.monitoring.pipeline
 
 retrain:
 	@echo "Controlled retraining is planned for a future module."

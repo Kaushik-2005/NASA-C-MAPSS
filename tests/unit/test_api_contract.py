@@ -77,6 +77,20 @@ def test_invalid_history_is_rejected() -> None:
         response = client.post("/v1/predict", json=payload)
 
     assert response.status_code == 422
+    assert response.json()["error_code"] == "VALIDATION_ERROR"
+    assert response.json()["request_id"]
+
+
+def test_request_size_limit_returns_typed_error() -> None:
+    with TestClient(app) as client:
+        response = client.post(
+            "/v1/predict",
+            content=b"{}",
+            headers={"content-length": "2000001"},
+        )
+
+    assert response.status_code == 413
+    assert response.json()["error_code"] == "REQUEST_TOO_LARGE"
 
 
 def test_online_prediction_matches_shared_offline_service() -> None:

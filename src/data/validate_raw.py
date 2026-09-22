@@ -7,7 +7,6 @@ from pathlib import Path
 from src.data.checksums import verify_sha256
 from src.data.ingest import load_fd001_file, load_rul_file
 
-
 RAW_DIR = Path("data/raw")
 EXPECTED_SHA256 = {
     "train_FD001.txt": "963B5E22825B34D8B21C69E1AEB4AF3E647050EB672EE8834BA4B5D91D2DE0F8",
@@ -44,7 +43,7 @@ def build_quality_report(raw_dir: Path = RAW_DIR) -> dict[str, object]:
     for name, frame in (("train_FD001.txt", train), ("test_FD001.txt", test)):
         report["files"][name] = {
             "sha256": EXPECTED_SHA256[name],
-            "rows": int(len(frame)),
+            "rows": len(frame),
             "columns": int(frame.shape[1]),
             "unique_engines": int(frame["unit_id"].nunique()),
             "missing_values": int(frame.isna().sum().sum()),
@@ -54,7 +53,7 @@ def build_quality_report(raw_dir: Path = RAW_DIR) -> dict[str, object]:
 
     report["files"]["RUL_FD001.txt"] = {
         "sha256": EXPECTED_SHA256["RUL_FD001.txt"],
-        "values": int(len(rul)),
+        "values": len(rul),
         "missing_values": int(rul.isna().sum()),
         "min_rul": int(rul.min()),
         "max_rul": int(rul.max()),

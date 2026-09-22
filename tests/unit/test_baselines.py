@@ -33,9 +33,7 @@ def test_regression_metrics() -> None:
     y_pred = np.array([12.0, 18.0, 33.0])
 
     assert mae(y_true, y_pred) == pytest.approx(7 / 3)
-    assert rmse(y_true, y_pred) == pytest.approx(
-        np.sqrt(17 / 3)
-    )
+    assert rmse(y_true, y_pred) == pytest.approx(np.sqrt(17 / 3))
 
     metrics = regression_metrics(y_true, y_pred)
 

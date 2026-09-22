@@ -73,6 +73,4 @@ class FeaturePreprocessor:
     @staticmethod
     def _validate_input_columns(features: pd.DataFrame) -> None:
         if tuple(features.columns) != FEATURE_COLUMNS:
-            raise ValueError(
-                "Feature columns do not match the v1 feature contract."
-            )
+            raise ValueError("Feature columns do not match the v1 feature contract.")

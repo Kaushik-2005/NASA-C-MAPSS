@@ -5,7 +5,6 @@ from dataclasses import dataclass
 
 import pandas as pd
 
-
 MIN_HISTORY_CYCLES = 20
 VALIDATION_FRACTIONS = (0.60, 0.70, 0.80, 0.90)
 
@@ -26,10 +25,7 @@ def generate_training_samples(
 ) -> pd.DataFrame:
     """Return every eligible labeled training row from cycle 20 onward."""
     _validate_minimum_history(minimum_history)
-    selected = frame[
-        frame["unit_id"].isin(set(engine_ids))
-        & (frame["cycle"] >= minimum_history)
-    ]
+    selected = frame[frame["unit_id"].isin(set(engine_ids)) & (frame["cycle"] >= minimum_history)]
     return selected.sort_values(["unit_id", "cycle"]).reset_index(drop=True)
 
 
@@ -51,9 +47,7 @@ def generate_validation_samples(
     deduplicated_cutoffs = 0
     selected_ids = set(engine_ids)
 
-    for unit_id, engine in frame[frame["unit_id"].isin(selected_ids)].groupby(
-        "unit_id", sort=True
-    ):
+    for unit_id, engine in frame[frame["unit_id"].isin(selected_ids)].groupby("unit_id", sort=True):
         engine = engine.sort_values("cycle")
         maximum_cycle = int(engine["cycle"].max())
         seen_cycles: set[int] = set()
@@ -66,9 +60,7 @@ def generate_validation_samples(
             seen_cycles.add(cutoff)
             match = engine[engine["cycle"] == cutoff]
             if match.empty:
-                raise ValueError(
-                    f"Engine {unit_id} has no row at validation cutoff {cutoff}."
-                )
+                raise ValueError(f"Engine {unit_id} has no row at validation cutoff {cutoff}.")
             rows.append(match.iloc[0])
 
     samples = (

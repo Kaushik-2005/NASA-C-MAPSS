@@ -5,15 +5,15 @@ from src.features.build_features import (
     FEATURE_COLUMNS,
     FEATURE_SCHEMA_VERSION,
     RETAINED_COLUMNS,
-    build_features,
     build_feature_matrix,
+    build_features,
     feature_metadata,
     write_feature_metadata,
 )
 
 
 def make_history(cycles: int) -> pd.DataFrame:
-    frame =  pd.DataFrame(
+    frame = pd.DataFrame(
         {
             "unit_id": [1] * cycles,
             "cycle": list(range(1, cycles + 1)),
@@ -23,7 +23,7 @@ def make_history(cycles: int) -> pd.DataFrame:
     for column in RETAINED_COLUMNS:
         frame[column] = range(cycles)
 
-    return frame 
+    return frame
 
 
 def test_features_reject_short_history() -> None:
@@ -108,9 +108,7 @@ def test_features_from_prefix_do_not_use_future_rows() -> None:
     altered_future.loc[altered_future["cycle"] > 20, RETAINED_COLUMNS] = 999999
 
     prefix_features = build_features(prefix)
-    altered_future_prefix_features = build_features(
-        altered_future[altered_future["cycle"] <= 20]
-    )
+    altered_future_prefix_features = build_features(altered_future[altered_future["cycle"] <= 20])
 
     pd.testing.assert_frame_equal(
         prefix_features,

@@ -1,0 +1,51 @@
+name: EngineGuard CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: python -m pip install -e ".[dev]"
+
+      - name: Download FD001 inputs
+        run: |
+          mkdir -p data/raw
+          curl --fail --location --retry 3 --output data/raw/train_FD001.txt https://raw.githubusercontent.com/bishals098/NASA-CMAPSS-dataset/master/train_FD001.txt
+          curl --fail --location --retry 3 --output data/raw/test_FD001.txt https://raw.githubusercontent.com/bishals098/NASA-CMAPSS-dataset/master/test_FD001.txt
+          curl --fail --location --retry 3 --output data/raw/RUL_FD001.txt https://raw.githubusercontent.com/bishals098/NASA-CMAPSS-dataset/master/RUL_FD001.txt
+
+      - name: Validate raw data
+        run: python -m src.data.validate_raw --report reports/fd001-data-quality.json
+
+      - name: Format and lint
+        run: |
+          python -m ruff format --check src tests
+          python -m ruff check src tests
+
+      - name: Type check
+        run: python -m mypy src
+
+      - name: Build development model
+        run: |
+          python -m src.features.materialize
+          python -m src.training.train
+
+      - name: Test with coverage
+        run: python -m pytest --cov=src --cov-report=term-missing --cov-report=xml
+
+      - name: Build container
+        run: docker build --tag engineguard-ci:${{ github.sha }} .
+
+      - name: Dependency audit
+        run: python -m pip_audit

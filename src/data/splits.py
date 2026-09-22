@@ -1,7 +1,7 @@
 """Deterministic engine-level partitions for the FD001 workflow."""
 
-from collections.abc import Iterable
 import json
+from collections.abc import Iterable
 from pathlib import Path
 
 
@@ -12,16 +12,8 @@ def build_engine_manifests(
     all_engine_ids = {int(engine_id) for engine_id in engine_ids}
     validation = {unit_id for unit_id in all_engine_ids if unit_id % 5 == 0}
     development = all_engine_ids - validation
-    initial_training = {
-        unit_id
-        for unit_id in development
-        if unit_id <= 75
-    }
-    incremental_training = {
-        unit_id
-        for unit_id in development
-        if unit_id > 75
-    }
+    initial_training = {unit_id for unit_id in development if unit_id <= 75}
+    incremental_training = {unit_id for unit_id in development if unit_id > 75}
 
     return {
         "development": development,

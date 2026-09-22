@@ -1,9 +1,9 @@
 """Assertions protecting engine, temporal, and target leakage boundaries."""
 
-from collections.abc import Mapping, Sequence, Set
+from collections.abc import Mapping, Sequence
+from collections.abc import Set as AbstractSet
 
 import pandas as pd
-
 
 FORBIDDEN_FEATURE_COLUMNS = frozenset(
     {
@@ -16,16 +16,14 @@ FORBIDDEN_FEATURE_COLUMNS = frozenset(
 )
 
 
-def assert_disjoint_partitions(manifests: Mapping[str, Set[int]]) -> None:
+def assert_disjoint_partitions(manifests: Mapping[str, AbstractSet[int]]) -> None:
     """Ensure no engine appears in more than one partition."""
     pairs = [("development", "validation"), ("initial_training", "incremental_training")]
     available_pairs = [pair for pair in pairs if all(name in manifests for name in pair)]
     if not available_pairs:
         names = list(manifests)
         available_pairs = [
-            (left, right)
-            for index, left in enumerate(names)
-            for right in names[index + 1 :]
+            (left, right) for index, left in enumerate(names) for right in names[index + 1 :]
         ]
 
     for left_name, right_name in available_pairs:
@@ -45,7 +43,7 @@ def assert_feature_columns_are_safe(columns: Sequence[str]) -> None:
 
 def assert_samples_belong_to_engines(
     samples: pd.DataFrame,
-    engine_ids: Set[int],
+    engine_ids: AbstractSet[int],
 ) -> None:
     """Ensure generated samples contain only engines from their manifest."""
     observed = set(samples["unit_id"])

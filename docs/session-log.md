@@ -169,3 +169,43 @@
 - Decisions made: Preserve version 2 as the latest registered candidate and keep the signature warning as a follow-up quality improvement rather than changing the frozen evaluation evidence.
 - Blockers: None for Module 10.
 - Next action: Begin Module 11 FastAPI service implementation.
+
+## 2026-09-22 - Module 11 API implementation
+
+- Goal: Implement the fixed FastAPI serving contract around the champion XGBoost model.
+- Changes: Added typed Pydantic request/response schemas, startup-loaded model service, all five endpoints, deterministic risk mapping, request IDs, structured prediction logging, and API contract tests.
+- Tests and results: API contract tests - 4 passed; full unit suite - 89 passed; Ruff passed. Health, readiness, model-info, single prediction, batch prediction, and invalid-history behavior are covered.
+- Learning captured: Readiness is distinct from process health; loading the model and preprocessor during application startup avoids per-request initialization and makes serving failures explicit.
+- Decisions made: Reuse the shared `build_features` and fitted preprocessor for online inference; reject malformed histories through Pydantic before model execution; never log full sensor histories.
+- Blockers: Offline/online parity and serving smoke checks remain before Module 11 completion.
+- Next action: Add an exact offline/online prediction parity test and run the local serving readiness gate.
+
+## 2026-09-22 - Module 11 complete
+
+- Goal: Verify the FastAPI serving contract and shared offline/online prediction behavior.
+- Changes: Added offline/online parity and OpenAPI endpoint smoke tests.
+- Tests and results: API contract tests - 6 passed; full unit suite - 91 passed; Ruff passed. All five required endpoints, readiness, bounded output, malformed-history rejection, and model parity are verified.
+- Learning captured: Reusing the exact feature builder and fitted preprocessor in the API prevents training/serving skew; readiness confirms model availability while health confirms process availability.
+- Decisions made: Keep the champion model loaded once in the application lifespan and use Pydantic validation before feature generation.
+- Blockers: None for Module 11.
+- Next action: Begin Module 12 container, CI, and coverage work.
+
+## 2026-09-22 - Module 12 implementation
+
+- Goal: Add container, CI, coverage, security-audit, and batch-limit foundations.
+- Changes: Added non-root multi-stage `Dockerfile`, `.dockerignore`, GitHub Actions workflow, coverage configuration, `pip-audit` dependency, and the 101-engine batch rejection test. Applied repository Ruff formatting fixes so CI formatting is enforceable.
+- Tests and results: Batch contract test - 7 passed; full suite - 93 passed. Measured `src/` coverage is 72%, below the required 80% gate. Docker build is blocked in the agent environment by permission denied on `.docker/buildx/instances`.
+- Learning captured: A CI pipeline must prepare reproducible data/model inputs before serving tests; container health and readiness are distinct checks.
+- Decisions made: Keep raw data and generated reports outside the Docker context; include the trained model/preprocessor artifacts explicitly in the runtime image; run CI as a non-root container user.
+- Blockers: Coverage must reach 80%, and Docker build/smoke verification requires resolving the local Docker daemon permission issue.
+- Next action: Add targeted tests for low-covered training/evaluation paths and retry the Docker build from a working Docker context.
+
+## 2026-09-22 - Module 12 complete
+
+- Goal: Verify the test, coverage, Docker, and CI foundations.
+- Changes: Added targeted coverage tests for evaluation reports/SHAP artifacts, training data preparation, preprocessing materialization, raw-data quality reporting, and EDA reporting. Added generated coverage and local Docker configuration paths to `.gitignore`. Pinned XGBoost to `3.4.1` to match the serialized model and made the Docker serving image install only runtime dependencies without the unnecessary NCCL dependency.
+- Tests and results: Full suite - 101 passed; `src/` coverage - 81.67%; Ruff check and format checks passed. Docker image `engineguard-local:module12` built successfully. Container smoke passed for `/health`, `/ready`, `/model-info`, and a valid 20-cycle `/v1/predict` request; the temporary container was stopped.
+- Learning captured: Coverage gates should exercise meaningful pipeline helpers rather than lowering thresholds. A serving image should contain only serving dependencies, while training-only tools such as MLflow, SHAP, and plotting remain outside the runtime image.
+- Decisions made: Pin XGBoost to the version used to serialize the champion artifact; keep Docker configuration isolated in the workspace; run the API container as non-root and verify health, readiness, metadata, and prediction behavior.
+- Blockers: None for Module 12.
+- Next action: Begin Module 13 - Fixed AWS Deployment.

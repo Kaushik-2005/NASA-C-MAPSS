@@ -2,12 +2,12 @@
 
 ## Current Module
 
-- Module: 11 - Fixed FastAPI Service
-- Status: NOT STARTED
+- Module: 12 - Tests, Docker, and CI
+- Status: COMPLETE
 - Started: 2026-09-21
 - Last updated: 2026-09-22
 - Current task: —
-- Next action: Read the fixed API endpoint and response contracts
+- Next action: Start Module 13 - Fixed AWS Deployment
 - Blockers: None
 
 ## Module Status
@@ -24,7 +24,36 @@
 | 8 | COMPLETE | `src/training/trees.py`, `src/training/tree_benchmark.py`, `reports/tree-model-comparison.md`, `configs/xgboost-candidate-v1.json`, MLflow experiment `engineguard-tree-models` | 30 grouped trials, validation comparison, timing, size, and frozen candidate verified |
 | 9 | COMPLETE | `src/evaluation/final_evaluation.py`, `reports/final-evaluation.md`, `reports/final-evaluation.json`, `reports/final-test-predictions.csv`, `reports/final-explainability/`, `docs/model-card.md` | One-time 100-engine holdout evaluation and SHAP artifacts verified |
 | 10 | COMPLETE | `src/training/train.py`, `dvc.yaml`, `reports/training-lineage.json`, MLflow model `EngineGuardRUL` versions 1-2 | DVC repro passed; lineage, registration, and aliases verified |
-| 11-17 | NOT STARTED | - | - |
+| 11 | COMPLETE | `src/api/`, `tests/unit/test_api_contract.py` | All endpoints, validation, readiness, parity, and OpenAPI smoke checks verified |
+| 12 | COMPLETE | `Dockerfile`, `.github/workflows/ci.yml`, `.dockerignore`, `coverage.xml`, targeted coverage tests | 101 tests passed; 81.67% `src/` coverage; Docker smoke passed |
+| 13-17 | NOT STARTED | - | - |
+
+## Module 12 Checklist
+
+- [x] Add non-root multi-stage Dockerfile
+- [x] Add container health check
+- [x] Add CI workflow for lint, typing, tests, coverage, training, and Docker build
+- [x] Add dependency audit step
+- [x] Add 100-engine batch-size test
+- [x] Run full functional test suite
+- [x] Run repository Ruff checks
+- [x] Reach 80% `src/` coverage
+- [x] Build and smoke-test the container
+- [x] Run Module 12 completion gate
+
+## Module 11 Checklist
+
+- [x] Add FastAPI and Uvicorn dependencies
+- [x] Define typed observation and request contracts
+- [x] Define fixed prediction response contract
+- [x] Load champion model once during startup
+- [x] Implement all five required endpoints
+- [x] Validate minimum history and strictly increasing cycles
+- [x] Enforce bounded predictions and deterministic risk mapping
+- [x] Add request IDs and structured prediction logging
+- [x] Add API contract tests
+- [x] Add offline/online prediction parity test
+- [x] Run serving smoke and readiness gate
 
 ## Module 10 Checklist
 
@@ -127,6 +156,22 @@
 | `.venv\\Scripts\\python.exe -m ruff check src\\training\\train.py tests\\unit\\test_train.py` | All checks passed | 2026-09-22 |
 | `.venv\\Scripts\\python.exe -m dvc dag` | `validate_raw` and `train` stages recognized with workspace-local DVC config | 2026-09-22 |
 | `dvc repro train` | Stage completed; `EngineGuardRUL` version 2 registered; `dvc.lock` updated | 2026-09-22 |
+| `.venv\\Scripts\\python.exe -m pytest tests\\unit\\test_api_contract.py -q` | 4 passed | 2026-09-22 |
+| `.venv\\Scripts\\python.exe -m pytest tests\\unit -q --tb=short` | 89 passed | 2026-09-22 |
+| `.venv\\Scripts\\python.exe -m ruff check src\\api tests\\unit\\test_api_contract.py` | All checks passed | 2026-09-22 |
+| `.venv\\Scripts\\python.exe -m pytest tests\\unit\\test_api_contract.py -q` | 7 passed | 2026-09-22 |
+| `.venv\\Scripts\\python.exe -m pytest --cov=src --cov-report=term-missing --cov-report=xml --cov-fail-under=0` | 93 passed; 72% coverage | 2026-09-22 |
+| `.venv\\Scripts\\python.exe -m ruff format --check src tests` | Pending after formatting pass | 2026-09-22 |
+| `.venv\\Scripts\\python.exe -m ruff check src tests` | Pending final verification | 2026-09-22 |
+| `docker build --tag engineguard-local:module12 .` | Blocked by Docker daemon permission on `.docker/buildx/instances` | 2026-09-22 |
+| `.venv\\Scripts\\python.exe -m pytest --cov=src --cov-report=term-missing --cov-report=xml --cov-fail-under=80` | 101 passed; 81.67% coverage | 2026-09-22 |
+| `.venv\\Scripts\\python.exe -m ruff check src tests` | All checks passed | 2026-09-22 |
+| `.venv\\Scripts\\python.exe -m ruff format --check src tests` | 52 files already formatted | 2026-09-22 |
+| `docker build --tag engineguard-local:module12 .` | Image built successfully | 2026-09-22 |
+| Container smoke: `/health`, `/ready`, `/model-info`, `/v1/predict` | Health/readiness/metadata/prediction checks passed | 2026-09-22 |
+| `.venv\\Scripts\\python.exe -m pytest tests\\unit\\test_api_contract.py -q` | 6 passed | 2026-09-22 |
+| `.venv\\Scripts\\python.exe -m pytest tests\\unit -q --tb=short` | 91 passed | 2026-09-22 |
+| `.venv\\Scripts\\python.exe -m ruff check src\\api tests\\unit\\test_api_contract.py` | All checks passed | 2026-09-22 |
 | `.venv\\Scripts\\python.exe -m src.training.tree_benchmark` | 30 grouped trials completed; report written; MLflow experiment `engineguard-tree-models` logged | 2026-09-22 |
 | `.venv\\Scripts\\python.exe -m pytest tests\\unit -q --tb=short` | 80 passed | 2026-09-22 |
 | `.venv\\Scripts\\python.exe -m ruff check src\\training\\trees.py src\\training\\tree_benchmark.py tests\\unit\\test_trees.py` | All checks passed | 2026-09-22 |

@@ -22,6 +22,4 @@ def verify_sha256(path: Path, expected: str) -> None:
     """Raise ValueError when a file does not match an expected SHA-256 digest."""
     actual = sha256_file(path)
     if actual.lower() != expected.lower():
-        raise ValueError(
-            f"Checksum mismatch for {path}: expected {expected}, received {actual}."
-        )
+        raise ValueError(f"Checksum mismatch for {path}: expected {expected}, received {actual}.")

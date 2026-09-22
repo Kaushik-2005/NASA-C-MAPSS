@@ -30,9 +30,7 @@ def load_rul_file(path: Path) -> pd.Series:
 
     frame = pd.read_csv(path, sep=r"\s+", header=None)
     if frame.shape[1] != 1:
-        raise ValueError(
-            f"Expected 1 RUL value per row, received {frame.shape[1]} columns."
-        )
+        raise ValueError(f"Expected 1 RUL value per row, received {frame.shape[1]} columns.")
     if len(frame) != 100:
         raise ValueError(f"Expected 100 RUL values, received {len(frame)}.")
 

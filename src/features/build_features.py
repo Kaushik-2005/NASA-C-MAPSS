@@ -6,7 +6,6 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-
 FEATURE_SCHEMA_VERSION = "v1"
 MINIMUM_HISTORY_CYCLES = 20
 ROLLING_WINDOWS = (5, 10, 20)
@@ -19,10 +18,7 @@ OPERATIONAL_COLUMNS = (
     "op_setting_3",
 )
 
-SENSOR_COLUMNS = tuple(
-    f"sensor_{index}"
-    for index in range(1, 22)
-)
+SENSOR_COLUMNS = tuple(f"sensor_{index}" for index in range(1, 22))
 
 EXCLUDED_COLUMNS = {
     "sensor_1",
@@ -34,9 +30,7 @@ EXCLUDED_COLUMNS = {
 }
 
 RETAINED_COLUMNS = OPERATIONAL_COLUMNS + tuple(
-    column
-    for column in SENSOR_COLUMNS
-    if column not in EXCLUDED_COLUMNS
+    column for column in SENSOR_COLUMNS if column not in EXCLUDED_COLUMNS
 )
 
 
@@ -86,6 +80,7 @@ def write_feature_metadata(path: Path) -> None:
         encoding="utf-8",
     )
 
+
 def build_features(history: pd.DataFrame) -> pd.DataFrame:
     """Build one ordered feature row from an engine history."""
     if len(history) < MINIMUM_HISTORY_CYCLES:
@@ -100,9 +95,7 @@ def build_features(history: pd.DataFrame) -> pd.DataFrame:
     missing_columns = set(RETAINED_COLUMNS) - set(history.columns)
 
     if missing_columns:
-        raise ValueError(
-            f"History is missing required columns: {sorted(missing_columns)}"
-        )
+        raise ValueError(f"History is missing required columns: {sorted(missing_columns)}")
 
     return pd.DataFrame([_build_feature_dict(history)], columns=FEATURE_COLUMNS)
 
@@ -119,17 +112,14 @@ def _build_feature_dict(history: pd.DataFrame) -> dict[str, float | int]:
             features[f"{column}__rolling_mean_{window}"] = recent_values.mean()
             features[f"{column}__rolling_std_{window}"] = recent_values.std(ddof=0)
 
-        features[f"{column}__delta_{DELTA_LAG}"] = (
-            values.iloc[-1] - values.iloc[-DELTA_LAG - 1]
-        )
+        features[f"{column}__delta_{DELTA_LAG}"] = values.iloc[-1] - values.iloc[-DELTA_LAG - 1]
 
         slope_values = values.tail(SLOPE_WINDOW).to_numpy(dtype=float)
         slope_cycles = history["cycle"].tail(SLOPE_WINDOW).to_numpy(dtype=float)
         centered_cycles = slope_cycles - slope_cycles.mean()
         centered_values = slope_values - slope_values.mean()
         features[f"{column}__slope_{SLOPE_WINDOW}"] = float(
-            np.dot(centered_cycles, centered_values)
-            / np.dot(centered_cycles, centered_cycles)
+            np.dot(centered_cycles, centered_values) / np.dot(centered_cycles, centered_cycles)
         )
 
     features["cycle__current"] = latest["cycle"]
@@ -146,23 +136,20 @@ def build_feature_matrix(
     required_sample_columns = {"unit_id", "cycle"}
     missing_sample_columns = required_sample_columns - set(samples.columns)
     if missing_sample_columns:
-        raise ValueError(
-            f"Samples are missing required columns: {sorted(missing_sample_columns)}"
-        )
+        raise ValueError(f"Samples are missing required columns: {sorted(missing_sample_columns)}")
 
     required_history_columns = {"unit_id", "cycle", *RETAINED_COLUMNS}
     missing_history_columns = required_history_columns - set(trajectories.columns)
     if missing_history_columns:
         raise ValueError(
-            "Trajectories are missing required columns: "
-            f"{sorted(missing_history_columns)}"
+            f"Trajectories are missing required columns: {sorted(missing_history_columns)}"
         )
 
     grouped_histories = {
         unit_id: engine.sort_values("cycle")
         for unit_id, engine in trajectories.groupby("unit_id", sort=False)
     }
-    rows: list[dict[str, float | int]] = [dict() for _ in range(len(samples))]
+    rows: list[dict[str, float | int]] = [{} for _ in range(len(samples))]
 
     for sample_positions, sample_group in samples.groupby("unit_id", sort=False):
         if sample_positions not in grouped_histories:
@@ -185,18 +172,12 @@ def build_feature_matrix(
                 rows[position][f"{column}__current"] = values[latest_index]
                 for window in ROLLING_WINDOWS:
                     window_values = values[end_index - window : end_index]
-                    rows[position][f"{column}__rolling_mean_{window}"] = float(
-                        window_values.mean()
-                    )
-                    rows[position][f"{column}__rolling_std_{window}"] = float(
-                        window_values.std()
-                    )
+                    rows[position][f"{column}__rolling_mean_{window}"] = float(window_values.mean())
+                    rows[position][f"{column}__rolling_std_{window}"] = float(window_values.std())
                 rows[position][f"{column}__delta_{DELTA_LAG}"] = (
                     values[latest_index] - values[latest_index - DELTA_LAG]
                 )
-                slope_cycles = cycle_values[end_index - SLOPE_WINDOW : end_index].astype(
-                    float
-                )
+                slope_cycles = cycle_values[end_index - SLOPE_WINDOW : end_index].astype(float)
                 slope_values = values[end_index - SLOPE_WINDOW : end_index]
                 centered_cycles = slope_cycles - slope_cycles.mean()
                 centered_values = slope_values - slope_values.mean()

@@ -149,9 +149,7 @@ def _shap_artifacts(
                 "row": position,
                 "unit_id": int(test_samples.iloc[position]["unit_id"]),
                 "cycle": int(test_samples.iloc[position]["cycle"]),
-                "top_contributions": top_local[
-                    ["feature", "shap_value"]
-                ].to_dict(orient="records"),
+                "top_contributions": top_local[["feature", "shap_value"]].to_dict(orient="records"),
             }
         )
         plot_data = top_local.sort_values("shap_value")
@@ -161,7 +159,10 @@ def _shap_artifacts(
         plt.xlabel("SHAP contribution to predicted RUL")
         plt.title(f"Local SHAP explanation — engine {int(test_samples.iloc[position]['unit_id'])}")
         plt.tight_layout()
-        plt.savefig(report_dir / f"shap-local-engine-{int(test_samples.iloc[position]['unit_id']):03d}.png", dpi=150)
+        plt.savefig(
+            report_dir / f"shap-local-engine-{int(test_samples.iloc[position]['unit_id']):03d}.png",
+            dpi=150,
+        )
         plt.close()
 
     local_path = report_dir / "shap-local-explanations.json"
@@ -241,7 +242,10 @@ def run_final_evaluation(
 
     if len(predictions) != 100:
         raise ValueError(f"Expected exactly 100 predictions, received {len(predictions)}")
-    if not np.isfinite(predictions).all() or not ((predictions >= 0) & (predictions <= RUL_CAP)).all():
+    if (
+        not np.isfinite(predictions).all()
+        or not ((predictions >= 0) & (predictions <= RUL_CAP)).all()
+    ):
         raise ValueError("Final predictions must be finite and bounded between 0 and 125")
 
     regression = regression_metrics(y_test, predictions)
@@ -316,7 +320,9 @@ def run_final_evaluation(
         },
     }
     metrics_path.parent.mkdir(parents=True, exist_ok=True)
-    metrics_path.write_text(json.dumps(metrics, indent=2, default=_json_default) + "\n", encoding="utf-8")
+    metrics_path.write_text(
+        json.dumps(metrics, indent=2, default=_json_default) + "\n", encoding="utf-8"
+    )
     _write_report(metrics, report_path)
     _write_model_card(model_card_path, metrics, candidate)
 

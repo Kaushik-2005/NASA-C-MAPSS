@@ -38,9 +38,7 @@ def _validate_inputs(
 
 def rmse(y_true: np.ndarray, y_pred: np.ndarray) -> float:
     true_values, predicted_values = _validate_inputs(y_true, y_pred)
-    return float(
-        np.sqrt(mean_squared_error(true_values, predicted_values))
-    )
+    return float(np.sqrt(mean_squared_error(true_values, predicted_values)))
 
 
 def mae(y_true: np.ndarray, y_pred: np.ndarray) -> float:

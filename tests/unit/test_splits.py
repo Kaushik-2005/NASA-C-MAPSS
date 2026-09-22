@@ -23,10 +23,7 @@ def test_development_and_validation_are_disjoint() -> None:
 def test_retraining_partitions_equal_development() -> None:
     manifests = fd001_manifests()
 
-    combined = (
-        manifests["initial_training"]
-        | manifests["incremental_training"]
-    )
+    combined = manifests["initial_training"] | manifests["incremental_training"]
 
     assert combined == manifests["development"]
 
@@ -40,6 +37,4 @@ def test_validation_ids_are_multiples_of_five() -> None:
 def test_initial_and_incremental_training_are_disjoint() -> None:
     manifests = fd001_manifests()
 
-    assert manifests["initial_training"].isdisjoint(
-        manifests["incremental_training"]
-    )
+    assert manifests["initial_training"].isdisjoint(manifests["incremental_training"])

@@ -170,4 +170,6 @@ def run_reproducible_training(
 
 if __name__ == "__main__":
     result = run_reproducible_training()
-    print(f"Registered {result['mlflow']['registered_model']} version {result['mlflow']['model_version']}")
+    print(
+        f"Registered {result['mlflow']['registered_model']} version {result['mlflow']['model_version']}"
+    )

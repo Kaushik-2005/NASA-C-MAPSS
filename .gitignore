@@ -19,7 +19,9 @@ env/
 .pytest_cache/
 .ruff_cache/
 .coverage
+coverage.xml
 htmlcov/
+.docker-config/
 
 # Jupyter
 .ipynb_checkpoints/

@@ -7,7 +7,6 @@ import pandas as pd
 
 from src.data.ingest import load_fd001_file
 
-
 RAW_TRAIN = Path("data/raw/train_FD001.txt")
 REPORT_PATH = Path("reports/fd001-profile.html")
 VARIANCE_THRESHOLD = 1e-6

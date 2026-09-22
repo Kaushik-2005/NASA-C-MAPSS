@@ -1,5 +1,5 @@
-import pytest
 import pandas as pd
+import pytest
 
 from src.data.schema import (
     EXPECTED_COLUMNS,
@@ -43,10 +43,7 @@ def test_wrong_column_names_raise() -> None:
 
 
 def test_valid_trajectory_data_does_not_raise() -> None:
-    rows = [
-        [unit_id] + [1] * (len(EXPECTED_COLUMNS) - 1)
-        for unit_id in range(1, 101)
-    ]
+    rows = [[unit_id] + [1] * (len(EXPECTED_COLUMNS) - 1) for unit_id in range(1, 101)]
     frame = pd.DataFrame(
         rows,
         columns=EXPECTED_COLUMNS,
@@ -56,10 +53,7 @@ def test_valid_trajectory_data_does_not_raise() -> None:
 
 
 def test_trajectory_data_rejects_non_numeric_value() -> None:
-    rows = [
-        [unit_id] + [1] * (len(EXPECTED_COLUMNS) - 1)
-        for unit_id in range(1, 101)
-    ]
+    rows = [[unit_id] + [1] * (len(EXPECTED_COLUMNS) - 1) for unit_id in range(1, 101)]
     frame = pd.DataFrame(
         rows,
         columns=EXPECTED_COLUMNS,
@@ -75,10 +69,7 @@ def test_trajectory_data_rejects_non_numeric_value() -> None:
 
 
 def test_trajectory_data_rejects_wrong_engine_count() -> None:
-    rows = [
-        [unit_id] + [1] * (len(EXPECTED_COLUMNS) - 1)
-        for unit_id in range(1, 4)
-    ]
+    rows = [[unit_id] + [1] * (len(EXPECTED_COLUMNS) - 1) for unit_id in range(1, 4)]
     frame = pd.DataFrame(rows, columns=EXPECTED_COLUMNS)
 
     with pytest.raises(ValueError, match="100 unique engines"):
@@ -105,9 +96,7 @@ def _valid_trajectory_frame() -> pd.DataFrame:
     rows = []
     for unit_id in range(1, 101):
         for cycle in range(1, 3):
-            rows.append(
-                [unit_id, cycle] + [1] * (len(EXPECTED_COLUMNS) - 2)
-            )
+            rows.append([unit_id, cycle] + [1] * (len(EXPECTED_COLUMNS) - 2))
     return pd.DataFrame(rows, columns=EXPECTED_COLUMNS)
 
 

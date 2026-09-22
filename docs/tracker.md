@@ -2,12 +2,12 @@
 
 ## Current Module
 
-- Module: 9 - Final Test Evaluation and Explainability
-- Status: IN PROGRESS
+- Module: 11 - Fixed FastAPI Service
+- Status: NOT STARTED
 - Started: 2026-09-21
 - Last updated: 2026-09-22
 - Current task: —
-- Next action: Read Module 10 reproducibility and registry contract
+- Next action: Read the fixed API endpoint and response contracts
 - Blockers: None
 
 ## Module Status
@@ -23,7 +23,20 @@
 | 7 | COMPLETE | `src/training/benchmark.py`, `reports/baseline-results.md`, `reports/baseline-results.json`, MLflow experiment `engineguard-baselines` | Validation benchmark, timing, model size, and threshold comparison verified |
 | 8 | COMPLETE | `src/training/trees.py`, `src/training/tree_benchmark.py`, `reports/tree-model-comparison.md`, `configs/xgboost-candidate-v1.json`, MLflow experiment `engineguard-tree-models` | 30 grouped trials, validation comparison, timing, size, and frozen candidate verified |
 | 9 | COMPLETE | `src/evaluation/final_evaluation.py`, `reports/final-evaluation.md`, `reports/final-evaluation.json`, `reports/final-test-predictions.csv`, `reports/final-explainability/`, `docs/model-card.md` | One-time 100-engine holdout evaluation and SHAP artifacts verified |
-| 10-17 | NOT STARTED | - | - |
+| 10 | COMPLETE | `src/training/train.py`, `dvc.yaml`, `reports/training-lineage.json`, MLflow model `EngineGuardRUL` versions 1-2 | DVC repro passed; lineage, registration, and aliases verified |
+| 11-17 | NOT STARTED | - | - |
+
+## Module 10 Checklist
+
+- [x] Implement reproducible training entry point
+- [x] Record data, DVC, Git, feature, config, metric, and model lineage
+- [x] Add DVC training stage
+- [x] Connect `make train`
+- [x] Register MLflow model version
+- [x] Assign `candidate` and `champion` aliases
+- [x] Add reproducibility and lineage tests
+- [x] Verify `dvc repro train` from an activated user shell
+- [x] Run Module 10 completion gate
 
 ## Module 9 Checklist
 
@@ -108,6 +121,12 @@
 | `.venv\\Scripts\\python.exe -m pytest tests\\unit\\test_final_evaluation.py -q --tb=short` | 3 passed | 2026-09-22 |
 | `.venv\\Scripts\\python.exe -m pytest tests\\unit -q --tb=short` | 83 passed | 2026-09-22 |
 | `.venv\\Scripts\\python.exe -m ruff check src\\evaluation\\final_evaluation.py tests\\unit\\test_final_evaluation.py` | All checks passed | 2026-09-22 |
+| `.venv\\Scripts\\python.exe -m src.training.train` | Registered `EngineGuardRUL` version 1 | 2026-09-22 |
+| MLflow alias lookup | `candidate=1`, `champion=1` | 2026-09-22 |
+| `.venv\\Scripts\\python.exe -m pytest tests\\unit -q --tb=short` | 85 passed | 2026-09-22 |
+| `.venv\\Scripts\\python.exe -m ruff check src\\training\\train.py tests\\unit\\test_train.py` | All checks passed | 2026-09-22 |
+| `.venv\\Scripts\\python.exe -m dvc dag` | `validate_raw` and `train` stages recognized with workspace-local DVC config | 2026-09-22 |
+| `dvc repro train` | Stage completed; `EngineGuardRUL` version 2 registered; `dvc.lock` updated | 2026-09-22 |
 | `.venv\\Scripts\\python.exe -m src.training.tree_benchmark` | 30 grouped trials completed; report written; MLflow experiment `engineguard-tree-models` logged | 2026-09-22 |
 | `.venv\\Scripts\\python.exe -m pytest tests\\unit -q --tb=short` | 80 passed | 2026-09-22 |
 | `.venv\\Scripts\\python.exe -m ruff check src\\training\\trees.py src\\training\\tree_benchmark.py tests\\unit\\test_trees.py` | All checks passed | 2026-09-22 |

@@ -149,3 +149,23 @@
 - Decisions made: Use capped official RUL as the final target, preserve raw predictions for diagnostics, clip only at the prediction boundary, and prevent overwriting final evidence once metrics exist.
 - Blockers: None.
 - Next action: Begin Module 10 reproducible training and model registry work.
+
+## 2026-09-22 - Module 10 implementation
+
+- Goal: Replace the placeholder training command with a reproducible training and registry stage.
+- Changes: Added `src/training/train.py`, a DVC `train` stage, `make train` integration, lineage hashes for raw data/config/DVC/Git, MLflow registration, and candidate/champion aliases.
+- Tests and results: Direct training registered `EngineGuardRUL` version 1 with `candidate=1` and `champion=1`; lineage recorded validation RMSE 16.4279; full unit suite - 85 passed; Ruff passed; DVC graph recognized both stages.
+- Learning captured: Reproducibility requires recording data checksum, feature schema, code revision, DVC state, configuration, metrics, and artifact identity together.
+- Decisions made: Initialize the champion alias only when none exists; preserve an existing champion for later promotion-policy decisions; keep the DVC command portable as `python -m ...`.
+- Blockers: `dvc repro train` could not run in the agent shell because `python` is not on the subprocess PATH; the user’s activated `.venv` shell is required for the final DVC gate.
+- Next action: Run `dvc repro train` in the activated environment and confirm the lock/output update.
+
+## 2026-09-22 - Module 10 complete
+
+- Goal: Verify the reproducible training and model-registry stage through DVC.
+- Changes: User ran `dvc repro train`; the stage completed, `dvc.lock` was updated, and MLflow registered `EngineGuardRUL` version 2.
+- Tests and results: DVC completion gate passed; candidate/champion registry workflow is operational. MLflow emitted a non-blocking warning that the logged model has no input signature.
+- Learning captured: DVC records stage inputs and outputs while MLflow records model lineage and aliases; both are needed for reproducible promotion workflows.
+- Decisions made: Preserve version 2 as the latest registered candidate and keep the signature warning as a follow-up quality improvement rather than changing the frozen evaluation evidence.
+- Blockers: None for Module 10.
+- Next action: Begin Module 11 FastAPI service implementation.

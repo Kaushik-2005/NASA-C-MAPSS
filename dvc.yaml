@@ -12,3 +12,21 @@ stages:
       - data/checksums.sha256
     outs:
       - reports/fd001-data-quality.json
+  train:
+    cmd: python -m src.training.train
+    deps:
+      - src/training/train.py
+      - src/training/trees.py
+      - src/evaluation/metrics.py
+      - src/features/build_features.py
+      - src/features/preprocessing.py
+      - src/data/ingest.py
+      - src/data/labels.py
+      - src/data/samples.py
+      - src/data/splits.py
+      - data/raw/train_FD001.txt
+      - configs/xgboost-candidate-v1.json
+      - models/feature_preprocessor_v1.joblib
+    outs:
+      - models/xgboost_candidate_v1.joblib
+      - reports/training-lineage.json

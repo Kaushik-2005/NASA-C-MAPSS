@@ -35,3 +35,63 @@ stages:
       hash: md5
       md5: 3da48ff681824b615bb87481b850916b
       size: 1140
+  train:
+    cmd: python -m src.training.train
+    deps:
+    - path: configs/xgboost-candidate-v1.json
+      hash: md5
+      md5: ac1b88e90e6a0fab04d4ef58ebe355cf
+      size: 437
+    - path: data/raw/train_FD001.txt
+      hash: md5
+      md5: 259f340bac32ce6fa8894815600fa757
+      size: 3515356
+    - path: models/feature_preprocessor_v1.joblib
+      hash: md5
+      md5: 17ed39dccd7c883daeb34a9e75564235
+      size: 10900
+    - path: src/data/ingest.py
+      hash: md5
+      md5: 599e09bcc12ce7371aa9f79d884ebbf5
+      size: 1283
+    - path: src/data/labels.py
+      hash: md5
+      md5: 044b164daa2c48b6928fea1de9950d23
+      size: 568
+    - path: src/data/samples.py
+      hash: md5
+      md5: 26c86033b37ecd802b4836de1dbbe05c
+      size: 3565
+    - path: src/data/splits.py
+      hash: md5
+      md5: 8e2cb40193bd6b37493f5a254259d65f
+      size: 1280
+    - path: src/evaluation/metrics.py
+      hash: md5
+      md5: 63f9eb12110b1fb88a3d5f12fd5e6c92
+      size: 3839
+    - path: src/features/build_features.py
+      hash: md5
+      md5: 4f4f47ca29c24abf92c6fb7c9205a985
+      size: 7657
+    - path: src/features/preprocessing.py
+      hash: md5
+      md5: 3a720b5bcd4e9e25f0300c519fe0c7bb
+      size: 3282
+    - path: src/training/train.py
+      hash: md5
+      md5: ae3153cd46bc00739c40d96df5ddd8af
+      size: 6502
+    - path: src/training/trees.py
+      hash: md5
+      md5: 41b71722e5672ae1e60c284480d45b62
+      size: 2474
+    outs:
+    - path: models/xgboost_candidate_v1.joblib
+      hash: md5
+      md5: b36624d7f079bcad1bf63ea5caa47353
+      size: 1769960
+    - path: reports/training-lineage.json
+      hash: md5
+      md5: 2d220f65a46bad546cf9427614585b26
+      size: 1590

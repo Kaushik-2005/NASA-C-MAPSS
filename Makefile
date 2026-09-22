@@ -7,7 +7,7 @@ data:
 	@echo "Module 3 will validate FD001 data."
 
 train:
-	@echo "Training pipeline is introduced in Module 7."
+	python -m src.training.train
 
 evaluate:
 	@echo "Evaluation pipeline is introduced in Module 7."

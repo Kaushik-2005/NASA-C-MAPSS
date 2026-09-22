@@ -40,8 +40,8 @@ def test_nasa_score_rejects_mismatched_shapes() -> None:
 
 def test_final_evaluation_helpers_write_reports_and_shap_artifacts(tmp_path) -> None:
     candidate = _load_candidate(Path("configs/xgboost-candidate-v1.json"))
-    preprocessor = joblib.load("models/feature_preprocessor_final_v1.joblib")
-    model = joblib.load("models/xgboost_final_v1.joblib")
+    preprocessor = joblib.load("models/feature_preprocessor_v1.joblib")
+    model = joblib.load("models/xgboost_candidate_v1.joblib")
     feature_names = tuple(preprocessor.selected_feature_names_ or ())
     samples = pd.DataFrame(
         {

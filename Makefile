@@ -4,22 +4,22 @@ setup:
 	python -m pip install -e ".[dev]"
 
 data:
-	@echo "Module 3 will validate FD001 data."
+	python -m dvc repro validate_raw
 
 train:
-	python -m src.training.train
+	python -m dvc repro train
 
 evaluate:
-	@echo "Evaluation pipeline is introduced in Module 7."
+	python -m src.evaluation.final_evaluation
 
 serve:
-	@echo "API service is introduced in Module 11."
+	python -m uvicorn src.api.app:app --host 0.0.0.0 --port 8000
 
 test:
 	python -m pytest -q
 
 monitor:
-	@echo "Monitoring pipeline is introduced in Module 14."
+	@echo "Monitoring is planned for a future module."
 
 retrain:
-	@echo "Retraining pipeline is introduced in Module 15."
+	@echo "Controlled retraining is planned for a future module."

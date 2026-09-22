@@ -1,0 +1,8 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/**/*.py": {
+      "excludeFiles": "{tests/**,data/**,docs/**,notebooks/**,reports/**,mlruns/**,.venv/**,models/*_final_v1.joblib,models/random_forest_rul_v1.joblib}"
+    }
+  }
+}

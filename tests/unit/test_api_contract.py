@@ -1,6 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
 
+from api.index import app as vercel_app
 from src.api.app import app
 from src.api.service import ModelService
 
@@ -30,6 +31,10 @@ def test_health_and_readiness_contracts() -> None:
 
     assert ready_response.status_code == 200
     assert ready_response.json()["status"] == "ready"
+
+
+def test_vercel_entrypoint_exports_same_fastapi_app() -> None:
+    assert vercel_app is app
 
 
 def test_prediction_response_contract() -> None:

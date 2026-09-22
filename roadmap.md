@@ -652,42 +652,42 @@ CI passes from a clean checkout, `src/` coverage is at least 80%, and the contai
 
 ---
 
-# Module 13: Fixed AWS Deployment
+# Module 13: Vercel Serverless Deployment
 
 ## Learn
 
-- Container registries, managed containers, IAM, artifact storage, and rollback.
+- Serverless Python functions, framework detection, bundle boundaries, and deployment verification.
 
 ## Architecture
 
 ```text
-GitHub Actions -> Amazon ECR -> Amazon ECS Fargate
-                               |-> S3 model artifacts
-                               |-> CloudWatch logs and metrics
+Git repository -> Vercel Python Function -> FastAPI -> bundled model artifacts
+                                      |-> Vercel function logs and metrics
 ```
 
 ## Build
 
-- Push a versioned image to ECR.
-- Store approved model artifacts under a versioned S3 path.
-- Deploy one ECS Fargate service instance.
-- Give the task read-only access to the exact required artifact path.
+- Export the FastAPI app through `api/index.py`.
+- Bundle only the approved candidate model and development preprocessor.
+- Configure Python 3.12 and exclude raw data, reports, tests, and unused artifacts.
+- Deploy the function through a connected Git repository.
 - Configure health/readiness checks and externalized settings.
 - Send 100 sequential requests after warm-up.
-- Record p50, p95, p99 latency, error rate, CPU, and memory.
-- Document rollback to a prior image and champion.
-- Shut down paid resources when the demonstration ends.
+- Record p50, p95, p99 latency and error rate, including cold-start behavior.
+- Document rollback to a prior Vercel deployment and champion.
+- Keep AWS as a documented future production option; do not provision paid resources.
 
 ## Deliver
 
-- Deployed API.
+- Vercel deployment configuration and entry point.
+- Deployed API or documented deployment limitation.
 - Deployment diagram.
 - Load-test report.
 - Deployment and rollback runbook.
 
 ## Done when
 
-The service loads the approved model from S3, passes checks, serves predictions, and rolls back without retraining.
+The service loads the approved bundled model, passes checks, serves predictions, and rolls back without retraining; if public deployment is unavailable, the limitation and local equivalent are documented honestly.
 
 ---
 

@@ -22,6 +22,19 @@ The current development-only artifact is described in
 `reports/feature-pipeline-v1.json`. It must be regenerated when feature order,
 exclusions, or preprocessing parameters change.
 
+## Deployment boundary
+
+The local and containerized FastAPI service is also deployable as a Vercel
+Python Function through `api/index.py`. Vercel loads the same `src.api.app:app`
+instance and routes all requests through the existing FastAPI contract. Only
+the candidate model and development preprocessor are deployment artifacts;
+raw data, reports, training stores, and experimental models remain excluded.
+
+Vercel is a serverless demonstration boundary: model loading may occur during
+cold starts, and training, MLflow, DVC, monitoring reports, and retraining stay
+outside the request function. The Docker image remains the reproducible local
+serving artifact.
+
 ## Leakage boundaries
 
 Validation and official test rows are not used to fit feature filtering or

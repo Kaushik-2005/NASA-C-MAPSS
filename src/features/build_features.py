@@ -162,7 +162,7 @@ def build_feature_matrix(
             end_index == 0 or cycle_values[end_index - 1] != cycle
             for end_index, cycle in zip(end_indices, sample_cycles)
         ):
-            raise ValueError(f"No trajectory row found for engine {sample_positions}.")
+            raise ValueError(f"No trajectory row found for engine {sample_positions!r}.")
 
         positions = sample_group.index.to_numpy()
         for column in RETAINED_COLUMNS:

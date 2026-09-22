@@ -44,4 +44,4 @@ class LogisticRegressionGD:
 
     @staticmethod
     def _sigmoid(values: np.ndarray) -> np.ndarray:
-        return 1.0 / (1.0 + np.exp(-np.clip(values, -500, 500)))
+        return np.asarray(1.0 / (1.0 + np.exp(-np.clip(values, -500, 500))), dtype=float)

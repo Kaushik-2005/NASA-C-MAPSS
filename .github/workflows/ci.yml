@@ -30,8 +30,8 @@ jobs:
 
       - name: Format and lint
         run: |
-          python -m ruff format --check src tests
-          python -m ruff check src tests
+          python -m ruff format --check src tests api
+          python -m ruff check src tests api
 
       - name: Type check
         run: python -m mypy src

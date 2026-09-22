@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 import joblib
 import matplotlib.pyplot as plt
@@ -47,7 +47,7 @@ def nasa_asymmetric_score(y_true: np.ndarray, y_pred: np.ndarray) -> float:
 def _load_candidate(path: Path) -> dict[str, Any]:
     if not path.exists():
         raise FileNotFoundError(f"Frozen candidate configuration not found: {path}")
-    candidate = json.loads(path.read_text(encoding="utf-8"))
+    candidate = cast(dict[str, Any], json.loads(path.read_text(encoding="utf-8")))
     if candidate.get("feature_schema_version") != "v1":
         raise ValueError("Final evaluation requires feature schema version v1")
     return candidate

@@ -41,8 +41,12 @@ data/processed/
 
 # Model and generated artifacts
 models/
+!models/
+models/*
 reports/generated/
 *.joblib
+!models/xgboost_candidate_v1.joblib
+!models/feature_preprocessor_v1.joblib
 *.pkl
 *.pickle
 
@@ -60,6 +64,13 @@ reports/final-explainability/
 reports/baseline-results.md
 reports/tree-model-comparison.md
 reports/final-evaluation.md
+
+# Keep only the four core project documents in Git; retain other notes locally
+docs/*
+!docs/design.md
+!docs/problem-definition.md
+!docs/architecture.md
+!docs/data-source.md
 
 # Local secrets and credentials
 *.pem

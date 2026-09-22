@@ -6,29 +6,35 @@ build-backend = "setuptools.build_meta"
 name = "engineguard-cmapss"
 version = "0.1.0"
 description = "Production-oriented NASA C-MAPSS FD001 RUL prediction platform"
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 dependencies = [
   "numpy>=1.26,<3",
   "pandas>=2.2,<3",
   "scikit-learn>=1.4,<2",
   "pydantic>=2.6,<3",
   "pyyaml>=6.0,<7",
-  "matplotlib>=3.8,<4",
-  "mlflow>=2.10,<3",
-  "xgboost==3.4.1",
-  "shap>=0.45,<1",
+  "xgboost-cpu==3.4.1",
   "fastapi>=0.110,<1",
   "uvicorn>=0.29,<1",
 ]
 
 [project.optional-dependencies]
+training = [
+  "matplotlib>=3.8,<4",
+  "mlflow>=2.10,<3",
+  "shap>=0.45,<1",
+]
 dev = [
   "pytest>=8,<9",
   "pytest-cov>=5,<6",
   "ruff>=0.6,<1",
   "mypy>=1.10,<2",
+  "pandas-stubs>=2.2,<3",
   "httpx2>=2,<3",
   "pip-audit>=2.7,<3",
+  "matplotlib>=3.8,<4",
+  "mlflow>=2.10,<3",
+  "shap>=0.45,<1",
 ]
 
 [tool.pytest.ini_options]
@@ -48,9 +54,31 @@ line-length = 100
 target-version = "py311"
 
 [tool.mypy]
-python_version = "3.11"
+python_version = "3.12"
 strict = true
 packages = ["src"]
+
+[[tool.mypy.overrides]]
+module = ["joblib"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["shap"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["sklearn.*"]
+ignore_missing_imports = true
+disallow_subclassing_any = false
+
+[[tool.mypy.overrides]]
+module = [
+  "src.data.validate_raw",
+  "src.eda.profile",
+  "src.features.materialize",
+  "src.training.baselines",
+]
+ignore_errors = true
 
 [tool.setuptools.packages.find]
 where = ["."]

@@ -4,8 +4,10 @@ from __future__ import annotations
 
 import logging
 import time
+from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from datetime import UTC, datetime
+from typing import cast
 from uuid import uuid4
 
 from fastapi import FastAPI, HTTPException, Request, status
@@ -25,7 +27,7 @@ logger = logging.getLogger("engineguard.api")
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     try:
         app.state.model_service = ModelService()
         app.state.startup_error = None
@@ -50,7 +52,7 @@ def _service(request: Request) -> ModelService:
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="Model service is not ready",
         )
-    return service
+    return cast(ModelService, service)
 
 
 def _predict_one(

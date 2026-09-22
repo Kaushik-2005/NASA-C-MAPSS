@@ -26,7 +26,7 @@ RUN python -m pip install --no-cache-dir \
         "pyyaml>=6.0,<7" \
         "fastapi>=0.110,<1" \
         "uvicorn>=0.29,<1" \
-    && python -m pip install --no-cache-dir --no-deps "xgboost==3.4.1" \
+    && python -m pip install --no-cache-dir --no-deps "xgboost-cpu==3.4.1" \
     && python -m pip install --no-cache-dir --no-deps /wheels/*.whl \
     && rm -rf /wheels
 

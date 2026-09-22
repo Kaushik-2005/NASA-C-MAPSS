@@ -93,6 +93,21 @@ def test_request_size_limit_returns_typed_error() -> None:
     assert response.json()["error_code"] == "REQUEST_TOO_LARGE"
 
 
+def test_optional_api_key_protects_prediction_routes(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("ENGINEGUARD_API_KEY", "test-secret")
+    with TestClient(app) as client:
+        unauthorized = client.post("/v1/predict", json=_history())
+        authorized = client.post(
+            "/v1/predict",
+            json=_history(),
+            headers={"X-API-Key": "test-secret"},
+        )
+
+    assert unauthorized.status_code == 401
+    assert unauthorized.json()["error_code"] == "AUTHENTICATION_REQUIRED"
+    assert authorized.status_code == 200
+
+
 def test_online_prediction_matches_shared_offline_service() -> None:
     payload = _history("engine-parity")
     offline_service = ModelService()

@@ -1,7 +1,8 @@
 schema: '2.0'
 stages:
   validate_raw:
-    cmd: python -m src.data.validate_raw
+    cmd: python -m src.data.validate_raw --report 
+      reports/fd001-data-quality.json
     deps:
     - path: data/checksums.sha256
       hash: md5
@@ -21,20 +22,25 @@ stages:
       size: 3515356
     - path: src/data/checksums.py
       hash: md5
-      md5: b73e417bff1d7cf62dbfdeaecfec5f5d
-      size: 908
+      md5: 3f75d56aa239643023523d92048bdbe1
+      size: 886
     - path: src/data/ingest.py
       hash: md5
-      md5: 599e09bcc12ce7371aa9f79d884ebbf5
-      size: 1283
+      md5: bf782c4d503554e46b10481f98c3f6b1
+      size: 1261
     - path: src/data/schema.py
       hash: md5
-      md5: dfdc80889736759d763e757524ebd576
-      size: 2672
+      md5: 6796f14557ab293dd2d6a3a52f5c94c4
+      size: 2752
     - path: src/data/validate_raw.py
       hash: md5
-      md5: 3da48ff681824b615bb87481b850916b
-      size: 1140
+      md5: 0cb9b2ec4c3440319a12563b6710a048
+      size: 2854
+    outs:
+    - path: reports/fd001-data-quality.json
+      hash: md5
+      md5: 3adf46b1945d6e0bf51abd28ad39fe70
+      size: 826
   train:
     cmd: python -m src.training.train
     deps:

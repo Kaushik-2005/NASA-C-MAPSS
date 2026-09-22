@@ -25,8 +25,10 @@ from src.api.schemas import (
     ReadyResponse,
 )
 from src.api.security import (
+    API_KEY_ENV_VAR,
     MAX_REQUEST_BYTES,
     REQUEST_TIMEOUT_SECONDS,
+    api_key_is_valid,
     validation_details,
 )
 from src.api.service import ModelService, risk_level
@@ -81,6 +83,18 @@ async def request_safety_middleware(
                     "request_id": str(uuid4()),
                 },
             )
+
+    if request.url.path.startswith("/v1/") and not api_key_is_valid(
+        request.headers.get("x-api-key")
+    ):
+        return JSONResponse(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            content={
+                "error_code": "AUTHENTICATION_REQUIRED",
+                "message": f"Provide a valid API key in X-API-Key when {API_KEY_ENV_VAR} is configured",
+                "request_id": str(uuid4()),
+            },
+        )
 
     try:
         return await asyncio.wait_for(

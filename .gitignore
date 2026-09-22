@@ -29,6 +29,7 @@ htmlcov/
 # DVC local state and caches; keep dvc.yaml, dvc.lock, and .dvc/config tracked
 .dvc/cache/
 .dvc/tmp/
+.dvc/site-cache/
 .dvc-system/
 .dvc-global/
 .dvc-site-cache/
@@ -72,6 +73,12 @@ docs/*
 !docs/problem-definition.md
 !docs/architecture.md
 !docs/data-source.md
+!docs/ml-fundamentals.md
+!docs/learning.md
+!docs/decisions.md
+!docs/threat-model.md
+!docs/cost-analysis.md
+!docs/security-checklist.md
 
 # Local secrets and credentials
 *.pem

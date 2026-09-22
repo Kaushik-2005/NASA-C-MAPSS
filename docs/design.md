@@ -35,6 +35,28 @@ cold starts, and training, MLflow, DVC, monitoring reports, and retraining stay
 outside the request function. The Docker image remains the reproducible local
 serving artifact.
 
+## Reliability and security boundary
+
+The API limits batch requests to 100 engines, history to 2,000 cycles, and
+request bodies to 2 MB. Histories must contain at least 20 strictly increasing
+cycles. Invalid input returns a typed client error and is not retried. A
+configured `ENGINEGUARD_API_KEY` protects `/v1/*` routes through the
+`X-API-Key` header; health, readiness, and model metadata remain available for
+service checks. The public Vercel demonstration leaves this optional key unset.
+
+`docs/threat-model.md` records the trust boundaries and residual risks.
+`scripts/security_audit.py` checks for high-confidence secret patterns and
+unexpected model artifacts. If model storage is moved to S3, the serving role
+must receive read access only to the required versioned model prefix.
+
+## Demonstration UI boundary
+
+The optional Streamlit application under `streamlit_app/` is a presentation
+client, not a second inference service. Its prediction page sends requests to
+the deployed Vercel API, so validation, feature generation, model versioning,
+and risk mapping remain centralized. Curated, non-sensitive EDA summaries are
+bundled with the UI; raw data, MLflow stores, and training artifacts are not.
+
 ## Leakage boundaries
 
 Validation and official test rows are not used to fit feature filtering or

@@ -119,3 +119,33 @@
 - Decisions made: Keep official test data and labels isolated; use standardized development-fitted features for Ridge and Logistic Regression; log local baseline artifacts to the `engineguard-baselines` MLflow experiment.
 - Blockers: None.
 - Next action: Begin Module 8 Random Forest and XGBoost with GroupKFold by engine.
+
+## 2026-09-22 - Module 8 started
+
+- Goal: Prepare reproducible tree-model training and engine-grouped XGBoost search.
+- Changes: Added the XGBoost dependency, Random Forest/XGBoost builders, five-fold `GroupKFold`, the exact 30-configuration search space, and grouped-split contract tests.
+- Tests and results: Tree-contract tests - 5 passed; full unit suite - 80 passed; Ruff checks passed for changed tree files; XGBoost 3.4.1 verified.
+- Learning captured: GroupKFold prevents rows from the same engine appearing in both a training and validation fold; randomized search must be evaluated by engine, not by individual row.
+- Decisions made: Use seed 42, one worker per tree/search process to avoid oversubscription, histogram XGBoost training, and negative RMSE as the search score.
+- Blockers: None for the implementation skeleton.
+- Next action: Train Random Forest and execute the exact 30-configuration XGBoost search on development samples.
+
+## 2026-09-22 - Module 8 complete
+
+- Goal: Train tree baselines, run the fixed grouped XGBoost search, and compare candidates on fixed validation samples.
+- Changes: Added the tree benchmark runner, serialized Random Forest/XGBoost artifacts, frozen `configs/xgboost-candidate-v1.json`, comparison reports, and MLflow logging.
+- Tests and results: 30 XGBoost configurations across 5 GroupKFold engine folds completed. Full unit suite - 80 passed; Ruff passed. Ridge RMSE 20.4961, Random Forest RMSE 19.2289, XGBoost RMSE 16.4279 on fixed validation samples. Best grouped-CV XGBoost RMSE was 14.5434.
+- Learning captured: Bagging reduces variance through independently fitted trees; boosting sequentially improves residual fit and needs regularization. Grouped folds protect against engine identity leakage.
+- Decisions made: Select the candidate using development-only grouped CV, evaluate once on fixed validation samples, use histogram XGBoost with seed 42, and preserve the full 30-trial search evidence.
+- Blockers: None.
+- Next action: Begin Module 9 final holdout evaluation and explainability; freeze the selected candidate first.
+
+## 2026-09-22 - Module 9 complete
+
+- Goal: Evaluate the frozen XGBoost candidate once on the official FD001 test holdout and produce explainability evidence.
+- Changes: Added the protected final evaluator, capped 100-row prediction file, NASA asymmetric score, RUL-band analysis, model card, error-analysis notebook, and global/three-local SHAP artifacts. Logged the final run to `engineguard-final-evaluation`.
+- Tests and results: Exactly 100 predictions were produced in range 0-125. Final RMSE 14.2892, MAE 10.4291, R-squared 0.8729, and NASA asymmetric score 377.6640. Full unit suite - 83 passed; Ruff passed.
+- Learning captured: Final holdout metrics estimate generalization only after feature selection and model configuration are frozen. SHAP ranks model contributions but does not establish sensor causality.
+- Decisions made: Use capped official RUL as the final target, preserve raw predictions for diagnostics, clip only at the prediction boundary, and prevent overwriting final evidence once metrics exist.
+- Blockers: None.
+- Next action: Begin Module 10 reproducible training and model registry work.

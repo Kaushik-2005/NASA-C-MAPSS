@@ -40,6 +40,24 @@ data/processed/
 # Model and generated artifacts
 models/
 reports/generated/
+*.joblib
+*.pkl
+*.pickle
+
+# Experiment tracking stores
+mlruns/
+mlartifacts/
+.mlflow/
+
+# Generated evaluation and explainability outputs
+reports/*.json
+reports/*.html
+reports/*.csv
+reports/*.png
+reports/final-explainability/
+reports/baseline-results.md
+reports/tree-model-comparison.md
+reports/final-evaluation.md
 
 # Local secrets and credentials
 *.pem
